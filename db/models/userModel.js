@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+
 import Joi from "joi";
 
 const userModel = Schema(
@@ -12,6 +13,7 @@ const userModel = Schema(
       required: [true, "Email is required"],
       unique: true,
     },
+
     password: {
       type: String,
     },
@@ -45,4 +47,4 @@ const updateUserSchema = Joi.object({
 });
 const User = model("user", userModel);
 
-export default { User, registerUserSchema, loginUserSchema };
+export default { User, registerUserSchema, loginUserSchema, updateUserSchema };
