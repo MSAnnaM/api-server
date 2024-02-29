@@ -11,6 +11,10 @@ const userSchema = new Schema(
       required: [true, "Email is required"],
       unique: true,
     },
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+    },
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
@@ -18,15 +22,6 @@ const userSchema = new Schema(
     },
     token: String,
     avatarURL: String,
-
-    verificationToken: {
-      type: String,
-      required: [true, "Verify token is required"],
-    },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     versionKey: false,

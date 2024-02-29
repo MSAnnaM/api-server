@@ -12,12 +12,11 @@ import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
-import gravatar from "gravatar";
 import Jimp from "jimp";
 
 export const userSignup = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
@@ -26,6 +25,7 @@ export const userSignup = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = {
+      name,
       email,
       password: hashedPassword,
     };
@@ -33,6 +33,7 @@ export const userSignup = async (req, res, next) => {
 
     res.status(201).json({
       user: {
+        name: newUser.name,
         email: newUser.email,
         subscription: newUser.subscription,
       },
