@@ -21,6 +21,11 @@ const userModel = Schema(
     avatarUrl: {
       type: String,
     },
+    theme: {
+      type: String,
+      enum: ["light", "dark", "blue"],
+      default: "dark",
+    },
     token: {
       type: String,
       default: null,
@@ -33,6 +38,7 @@ const registerUserSchema = Joi.object({
   name: Joi.string().required.max(16),
   email: Joi.email().required(),
   password: Joi.string.required().min(6),
+  theme: Joi.string(),
 });
 
 const loginUserSchema = Joi.object({
