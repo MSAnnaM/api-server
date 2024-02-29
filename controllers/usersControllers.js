@@ -7,6 +7,7 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
+  updateUserService,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
@@ -140,5 +141,22 @@ export const addAvatar = async (req, res, next) => {
     res.json({ avatarURL });
   } catch (er) {
     next(er);
+  }
+};
+
+export const updateUserController = async (req, res) => {
+  const { _id } = req.params.userId;
+  const { name, email, password, avatarURL } = req.body;
+
+  try {
+    const updatedUser = await updateUserService(_id, {
+      name,
+      email,
+      password,
+      avatarURL,
+    });
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to update user profile." });
   }
 };

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   userRegistrationSchema,
+  userUpdateSchema,
   userUpdateSubscriptionSchema,
 } from "../schemas/userSchemas.js";
 import validateBody from "../helpers/validateBody.js";
@@ -10,6 +11,7 @@ import {
   userLogout,
   currentUser,
   userUpdateSubscription,
+  updateUserController,
 } from "../controllers/usersControllers.js";
 import { verifyToken } from "../midellwares/checkToken.js";
 
@@ -24,6 +26,12 @@ userRouter.patch(
   verifyToken,
   validateBody(userUpdateSubscriptionSchema),
   userUpdateSubscription
+);
+userRouter.patch(
+  "/updateUser",
+  verifyToken,
+  validateBody(userUpdateSchema),
+  updateUserController
 );
 
 export default userRouter;
