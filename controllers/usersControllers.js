@@ -29,13 +29,14 @@ export const userSignup = async (req, res, next) => {
       email,
       password: hashedPassword,
     };
+    console.log(user);
     const newUser = await userRegistration(user);
 
     res.status(201).json({
       user: {
         name: newUser.name,
         email: newUser.email,
-        subscription: newUser.subscription,
+        theme: "dark",
       },
     });
   } catch (er) {

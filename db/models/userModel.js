@@ -13,7 +13,6 @@ const userModel = Schema(
       required: [true, "Email is required"],
       unique: true,
     },
-
     password: {
       type: String,
       required: true,
@@ -54,4 +53,4 @@ const updateUserSchema = Joi.object({
 });
 const User = model("user", userModel);
 
-export default { User, registerUserSchema, loginUserSchema, updateUserSchema };
+export default User;
