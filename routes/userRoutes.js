@@ -3,6 +3,8 @@ import {
   userRegistrationSchema,
   userUpdateSchema,
   userUpdateSubscriptionSchema,
+  loginUserSchema,
+  updateUserSchema,
 } from "../schemas/userSchemas.js";
 import validateBody from "../helpers/validateBody.js";
 import {
@@ -18,7 +20,7 @@ import { verifyToken } from "../midellwares/checkToken.js";
 const userRouter = express.Router();
 
 userRouter.post("/register", validateBody(userRegistrationSchema), userSignup);
-userRouter.post("/login", validateBody(userRegistrationSchema), userSignIn);
+userRouter.post("/login", validateBody(loginUserSchema), userSignIn);
 userRouter.post("/logout", verifyToken, userLogout);
 userRouter.get("/current", verifyToken, currentUser);
 userRouter.patch(

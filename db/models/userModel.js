@@ -13,7 +13,6 @@ const userModel = Schema(
       required: [true, "Email is required"],
       unique: true,
     },
-
     password: {
       type: String,
       required: true,
@@ -35,23 +34,23 @@ const userModel = Schema(
 );
 
 const registerUserSchema = Joi.object({
-  name: Joi.string().required.max(16),
-  email: Joi.email().required(),
-  password: Joi.string.required().min(6),
+  name: Joi.string().required().max(16),
+  email: Joi.string().email().required(),
+  password: Joi.string().required().min(6),
   theme: Joi.string(),
 });
 
 const loginUserSchema = Joi.object({
-  email: Joi.email().required().max(16),
-  password: Joi.string.required().min(6),
+  email: Joi.string().email().required().max(16),
+  password: Joi.string().required().min(6),
 });
 
 const updateUserSchema = Joi.object({
   name: Joi.string().max(16),
-  email: Joi.email(),
+  email: Joi.string().email(),
   password: Joi.string().min(6),
   avatarUrl: Joi.string(),
 });
 const User = model("user", userModel);
 
-export default { User, registerUserSchema, loginUserSchema, updateUserSchema };
+export default User;

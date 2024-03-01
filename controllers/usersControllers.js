@@ -13,12 +13,11 @@ import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
-import gravatar from "gravatar";
 import Jimp from "jimp";
 
 export const userSignup = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
@@ -27,15 +26,19 @@ export const userSignup = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = {
+      name,
       email,
       password: hashedPassword,
+      theme: "dark",
     };
+    
     const newUser = await userRegistration(user);
 
     res.status(201).json({
       user: {
+        name: newUser.name,
         email: newUser.email,
-        subscription: newUser.subscription,
+        theme: "dark",
       },
     });
   } catch (er) {
@@ -67,7 +70,6 @@ export const userSignIn = async (req, res, next) => {
       token: user.token,
       user: {
         email: user.email,
-        subscription: user.subscription,
       },
     });
   } catch (er) {
@@ -94,8 +96,8 @@ export const userLogout = async (req, res, next) => {
 
 export const currentUser = async (req, res) => {
   try {
-    const { email, subscription } = req.user;
-    res.json({ email, subscription });
+    const user = req.user;
+    res.json(user);
   } catch (er) {
     console.error(er);
   }
