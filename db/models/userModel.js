@@ -1,32 +1,56 @@
 import { Schema, model } from "mongoose";
 
-const userSchema = new Schema(
+import Joi from "joi";
+
+const userModel = Schema(
   {
-    password: {
+    name: {
       type: String,
-      required: [true, "Set password for user"],
+      required: true,
     },
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
     },
-    name: {
+    password: {
       type: String,
-      required: [true, "Name is required"],
+      required: true,
     },
-    subscription: {
+    avatarUrl: {
       type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
     },
-    token: String,
-    avatarURL: String,
+    theme: {
+      type: String,
+      enum: ["light", "dark", "blue"],
+      default: "dark",
+    },
+    token: {
+      type: String,
+      default: null,
+    },
   },
-  {
-    versionKey: false,
-  }
+  { versionKey: false }
 );
 
-const User = model("user", userSchema);
+const registerUserSchema = Joi.object({
+  name: Joi.string().required().max(16),
+  email: Joi.string().email().required(),
+  password: Joi.string().required().min(6),
+  theme: Joi.string(),
+});
+
+const loginUserSchema = Joi.object({
+  email: Joi.string().email().required().max(16),
+  password: Joi.string().required().min(6),
+});
+
+const updateUserSchema = Joi.object({
+  name: Joi.string().max(16),
+  email: Joi.string().email(),
+  password: Joi.string().min(6),
+  avatarUrl: Joi.string(),
+});
+const User = model("user", userModel);
+
 export default User;

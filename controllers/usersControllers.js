@@ -30,14 +30,16 @@ export const userSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
+      theme: "dark",
     };
+    
     const newUser = await userRegistration(user);
 
     res.status(201).json({
       user: {
         name: newUser.name,
         email: newUser.email,
-        subscription: newUser.subscription,
+        theme: "dark",
       },
     });
   } catch (er) {
@@ -69,7 +71,6 @@ export const userSignIn = async (req, res, next) => {
       token: user.token,
       user: {
         email: user.email,
-        subscription: user.subscription,
       },
     });
   } catch (er) {
@@ -96,8 +97,8 @@ export const userLogout = async (req, res, next) => {
 
 export const currentUser = async (req, res) => {
   try {
-    const { email, subscription } = req.user;
-    res.json({ email, subscription });
+    const user = req.user;
+    res.json(user);
   } catch (er) {
     console.error(er);
   }
