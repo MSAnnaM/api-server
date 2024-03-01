@@ -15,3 +15,10 @@ export const verificationEmailSchema = Joi.object({
     "any.required": "Missing required email field",
   }),
 });
+
+export const userUpdateSchema = Joi.object({
+  name: Joi.string().min(1).max(255),
+  email: Joi.string().email(),
+  password: Joi.string().min(6).max(30),
+  avatarURL: Joi.string().uri().allow(""),
+});

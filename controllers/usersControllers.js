@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import cloudinary from "../helpers/cloudinaryConfig.js";
+
 dotenv.config();
 
 import bcrypt from "bcrypt";
@@ -141,5 +143,22 @@ export const addAvatar = async (req, res, next) => {
     res.json({ avatarURL });
   } catch (er) {
     next(er);
+  }
+};
+
+export const updateUserController = async (req, res) => {
+  const { userId } = req.params;
+  const { name, email, password } = req.body;
+
+  try {
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      req.body.avatarURL = result.secure_url;
+    }
+    const updatedUser = await updateUserService(userId, req.body);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Unable to update user profile." });
   }
 };
