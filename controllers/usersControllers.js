@@ -95,8 +95,8 @@ export const userLogout = async (req, res, next) => {
 
 export const currentUser = async (req, res) => {
   try {
-    const { email, subscription } = req.user;
-    res.json({ email, subscription });
+    const user = req.user;
+    res.json(user);
   } catch (er) {
     console.error(er);
   }
