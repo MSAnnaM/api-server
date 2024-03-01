@@ -1,16 +1,19 @@
 import Joi from "joi";
 
 export const userRegistrationSchema = Joi.object({
+  name: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
 
-export const userUpdateSubscriptionSchema = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business").required(),
+export const loginUserSchema = Joi.object({
+  email: Joi.string().email().required().max(16),
+  password: Joi.string().required().min(6),
 });
 
-export const verificationEmailSchema = Joi.object({
-  email: Joi.string().email().required().messages({
-    "any.required": "Missing required email field",
-  }),
+export const updateUserSchema = Joi.object({
+  name: Joi.string().max(16),
+  email: Joi.string().email(),
+  password: Joi.string().min(6),
+  avatarUrl: Joi.string(),
 });

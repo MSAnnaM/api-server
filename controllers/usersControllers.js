@@ -17,7 +17,8 @@ import Jimp from "jimp";
 
 export const userSignup = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
+    console.log(name);
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
@@ -26,15 +27,18 @@ export const userSignup = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = {
+      name,
       email,
       password: hashedPassword,
     };
+    console.log(user);
     const newUser = await userRegistration(user);
 
     res.status(201).json({
       user: {
+        name: newUser.name,
         email: newUser.email,
-        subscription: newUser.subscription,
+        theme: "dark",
       },
     });
   } catch (er) {
