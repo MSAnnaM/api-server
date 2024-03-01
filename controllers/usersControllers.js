@@ -12,13 +12,11 @@ import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
-import gravatar from "gravatar";
 import Jimp from "jimp";
 
 export const userSignup = async (req, res, next) => {
   try {
-    const { email, password, name } = req.body;
-    console.log(name);
+    const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
