@@ -28,8 +28,9 @@ export const userSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
+      theme: "dark",
     };
-    console.log(user);
+    
     const newUser = await userRegistration(user);
 
     res.status(201).json({
@@ -68,7 +69,6 @@ export const userSignIn = async (req, res, next) => {
       token: user.token,
       user: {
         email: user.email,
-        subscription: user.subscription,
       },
     });
   } catch (er) {

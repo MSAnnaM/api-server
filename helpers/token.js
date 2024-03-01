@@ -2,10 +2,10 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-const { TOKEN_SECRET, TOKEN_EXPIRES } = process.env;
+const { TOKEN_SECRET} = process.env;
 
 export const signupToken = (id) => {
-  return jwt.sign({ id }, TOKEN_SECRET, { expiresIn: TOKEN_EXPIRES });
+  return jwt.sign({ id }, TOKEN_SECRET);
 };
 
 export const checkAuthToken = (token) => {
