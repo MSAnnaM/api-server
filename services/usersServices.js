@@ -50,13 +50,28 @@ export async function getUserByEmailWithPassword(email) {
     console.error(error.message);
   }
 }
-export async function updateUserService(userId, updatedData) {
+export const uploadImage = async (imagePath) => {
+  const options = {
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+  };
   try {
-    const user = await User.findByIdAndUpdate(userId, updatedData, {
+    const result = await cloudinary.uploader.upload(imagePath, options);
+    return result.secure_url;
+  } catch (error) {
+    console.error("error in Cloudinary:", error);
+    throw new Error("Помилка завантаження зображення");
+  }
+};
+
+export const updateProfile = async (id, updatedData) => {
+  try {
+    const user = await User.findByIdAndUpdate(id, updatedData, {
       new: true,
     });
     return user;
   } catch (error) {
     throw new Error("Unable to update user in the database.");
   }
-}
+};

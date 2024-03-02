@@ -33,7 +33,7 @@ export const userSignup = async (req, res, next) => {
       password: hashedPassword,
       theme: "dark",
     };
-    
+
     const newUser = await userRegistration(user);
 
     res.status(201).json({
@@ -148,24 +148,42 @@ export const addAvatar = async (req, res, next) => {
     next(er);
   }
 };
-
-export const updateUserController = async (req, res) => {
-  const { _id } = req.user;
-
-console.log(_id);
-
-  const { name, email, password } = req.body;
-
-
+export const uploadImageController = async (req, res) => {
   try {
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      req.body.avatarURL = result.secure_url;
+    if (!req.file) {
+      throw new Error("No file provided");
     }
-    const updatedUser = await updateUserService(_id, req.body);
-    res.status(200).json(updatedUser);
+
+    const imagePath = req.file.path;
+    const result = await uploadImage(imagePath);
+    res.json({ imageUrl: result });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Unable to update user profile." });
+    console.error("Error uploading image:", error);
+    res.status(500).json({ error: "Unable to upload image" });
+  }
+};
+
+export const updateProfileController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password, imagePath } = req.body;
+
+    let imageUrl;
+    if (imagePath) {
+      imageUrl = await uploadImage(imagePath);
+    }
+
+    const updatedData = {
+      name,
+      email,
+      password,
+      avatarURL: imageUrl,
+    };
+
+    const updatedUser = await updateProfile(id, updatedData);
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ error: "Unable to update profile." });
   }
 };
