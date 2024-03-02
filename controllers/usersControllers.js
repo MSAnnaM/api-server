@@ -9,6 +9,7 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
+  updateUserService,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
@@ -148,7 +149,10 @@ export const addAvatar = async (req, res, next) => {
 };
 
 export const updateUserController = async (req, res) => {
-  const { userId } = req.params;
+  const { _id } = req.user;
+
+console.log(_id);
+
   const { name, email, password } = req.body;
 
   try {
@@ -156,7 +160,7 @@ export const updateUserController = async (req, res) => {
       const result = await cloudinary.uploader.upload(req.file.path);
       req.body.avatarURL = result.secure_url;
     }
-    const updatedUser = await updateUserService(userId, req.body);
+    const updatedUser = await updateUserService(_id, req.body);
     res.status(200).json(updatedUser);
   } catch (error) {
     console.error(error);

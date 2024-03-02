@@ -3,7 +3,6 @@ import {
   userRegistrationSchema,
   userUpdateSchema,
   loginUserSchema,
-  updateUserSchema,
 } from "../schemas/userSchemas.js";
 import validateBody from "../helpers/validateBody.js";
 import {
@@ -14,6 +13,7 @@ import {
   updateUserController,
 } from "../controllers/usersControllers.js";
 import { verifyToken } from "../midellwares/checkToken.js";
+import upload from "../midellwares/upload.js";
 
 const userRouter = express.Router();
 
@@ -24,7 +24,7 @@ userRouter.get("/current", verifyToken, currentUser);
 userRouter.patch(
   "/updateUser",
   verifyToken,
-  validateBody(userUpdateSchema),
+  upload.single("file"),
   updateUserController
 );
 
