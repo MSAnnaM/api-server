@@ -50,20 +50,6 @@ export async function getUserByEmailWithPassword(email) {
     console.error(error.message);
   }
 }
-export const uploadImage = async (imagePath) => {
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-  };
-  try {
-    const result = await cloudinary.uploader.upload(imagePath, options);
-    return result.secure_url;
-  } catch (error) {
-    console.error("error in Cloudinary:", error);
-    throw new Error("Помилка завантаження зображення");
-  }
-};
 
 export const updateProfileInDatabase = async (id, updatedData) => {
   try {
