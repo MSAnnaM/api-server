@@ -150,38 +150,45 @@ export const addAvatar = async (req, res, next) => {
 };
 export const uploadImageController = async (req, res) => {
   try {
-    if (!req.file) {
-      throw new Error("No file provided");
-    }
+    const result = await cloudinary.uploader.upload(
+      req.file.buffer.toString("base64"),
+      {
+        public_id: "uploaded_image",
+      }
+    );
 
-    const imagePath = req.file.path;
-    const result = await uploadImage(imagePath);
-    res.json({ imageUrl: result });
+    console.log("Image uploaded to Cloudinary:", result);
+    res.json(result);
   } catch (error) {
     console.error("Error uploading image:", error);
-    res.status(500).json({ error: "Unable to upload image" });
+    res.status(500).json({ error: "Unable to upload image." });
   }
 };
 
 export const updateProfileController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, password, imagePath } = req.body;
-
+    const { name, email, currentPassword } = req.body;
     let imageUrl;
-    if (imagePath) {
-      imageUrl = await uploadImage(imagePath);
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(
+        req.file.buffer.toString("base64"),
+        {
+          public_id: `profile_photos/user_${id}`,
+        }
+      );
+      imageUrl = result.secure_url;
     }
 
-    const updatedData = {
+    const updatedProfile = await updateProfileInDatabase(id, {
       name,
       email,
-      password,
+      currentPassword,
       avatarURL: imageUrl,
-    };
+    });
 
-    const updatedUser = await updateProfile(id, updatedData);
-    res.json(updatedUser);
+    res.json(updatedProfile);
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ error: "Unable to update profile." });

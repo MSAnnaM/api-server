@@ -75,3 +75,38 @@ export const updateProfile = async (id, updatedData) => {
     throw new Error("Unable to update user in the database.");
   }
 };
+
+export const updateProfileInDatabase = async (id, updatedData) => {
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    user.name = updatedData.name;
+    user.email = updatedData.email;
+
+    if (updatedData.newPassword) {
+      const isCurrentPasswordValid = await bcrypt.compare(
+        updatedData.currentPassword,
+        user.password
+      );
+
+      if (!isCurrentPasswordValid) {
+        throw new Error("Current password is incorrect");
+      }
+
+      const hashedNewPassword = await bcrypt.hash(updatedData.newPassword, 10);
+      user.password = hashedNewPassword;
+    }
+
+    user.profilePhoto = updatedData.profilePhoto;
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
+  } catch (error) {
+    throw error;
+  }
+};

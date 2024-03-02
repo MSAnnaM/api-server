@@ -11,6 +11,7 @@ import {
   userLogout,
   currentUser,
   updateProfileController,
+  uploadImageController,
 } from "../controllers/usersControllers.js";
 import { verifyToken } from "../midellwares/checkToken.js";
 import upload from "../midellwares/upload.js";
@@ -21,8 +22,10 @@ userRouter.post("/register", validateBody(userRegistrationSchema), userSignup);
 userRouter.post("/login", validateBody(loginUserSchema), userSignIn);
 userRouter.post("/logout", verifyToken, userLogout);
 userRouter.get("/current", verifyToken, currentUser);
+userRouter.post("/upload", upload.single("image"), uploadImageController);
 userRouter.patch(
-  "/updateUser",
+  "/updateUser/:id",
+  upload.single("image"),
   validateBody(userUpdateSchema),
   updateProfileController
 );
