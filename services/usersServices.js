@@ -65,17 +65,6 @@ export const uploadImage = async (imagePath) => {
   }
 };
 
-export const updateProfile = async (id, updatedData) => {
-  try {
-    const user = await User.findByIdAndUpdate(id, updatedData, {
-      new: true,
-    });
-    return user;
-  } catch (error) {
-    throw new Error("Unable to update user in the database.");
-  }
-};
-
 export const updateProfileInDatabase = async (id, updatedData) => {
   try {
     const user = await User.findById(id);
@@ -101,7 +90,7 @@ export const updateProfileInDatabase = async (id, updatedData) => {
       user.password = hashedNewPassword;
     }
 
-    user.profilePhoto = updatedData.profilePhoto;
+    user.avatarURL = updatedData.avatarURL;
 
     const updatedUser = await user.save();
 

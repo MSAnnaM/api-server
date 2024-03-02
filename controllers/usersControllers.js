@@ -148,6 +148,7 @@ export const addAvatar = async (req, res, next) => {
     next(er);
   }
 };
+
 export const uploadImageController = async (req, res) => {
   try {
     const result = await cloudinary.uploader.upload(
