@@ -33,6 +33,7 @@ const userModel = Schema(
   { versionKey: false }
 );
 
+
 const registerUserSchema = Joi.object({
   name: Joi.string().required().max(16),
   email: Joi.string().email().required(),
@@ -51,6 +52,7 @@ const updateUserSchema = Joi.object({
   password: Joi.string().min(8),
   avatarUrl: Joi.string(),
 });
+
 const User = model("user", userModel);
 
 export default User;

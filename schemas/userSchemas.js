@@ -11,9 +11,9 @@ export const loginUserSchema = Joi.object({
   password: Joi.string().required().min(8),
 });
 
-export const updateUserSchema = Joi.object({
-  name: Joi.string().max(16),
+export const userUpdateSchema = Joi.object({
+  name: Joi.string().min(1).max(255),
   email: Joi.string().email(),
-  password: Joi.string().min(8),
-  avatarUrl: Joi.string(),
+  password: Joi.string().min(6).max(30),
+  avatarURL: Joi.string().uri().allow(""),
 });
