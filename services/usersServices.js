@@ -76,7 +76,9 @@ export const updateProfileInDatabase = async (id, updatedData) => {
       user.password = hashedNewPassword;
     }
 
-    user.avatarURL = updatedData.avatarURL;
+    if (updatedData.avatarURL) {
+      user.avatarURL = updatedData.avatarURL;
+    }
 
     const updatedUser = await user.save();
 
