@@ -37,6 +37,7 @@ export const userSignup = async (req, res, next) => {
     const newUser = await userRegistration(user);
 
     res.status(201).json({
+      token: newUser.token,
       user: {
         name: newUser.name,
         email: newUser.email,
@@ -154,6 +155,7 @@ export const updateUserController = async (req, res) => {
 console.log(_id);
 
   const { name, email, password } = req.body;
+
 
   try {
     if (req.file) {
