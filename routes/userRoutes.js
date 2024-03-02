@@ -10,7 +10,7 @@ import {
   userSignIn,
   userLogout,
   currentUser,
-  updateUserController,
+  updateProfileController,
 } from "../controllers/usersControllers.js";
 import { verifyToken } from "../midellwares/checkToken.js";
 import upload from "../midellwares/upload.js";
@@ -23,9 +23,8 @@ userRouter.post("/logout", verifyToken, userLogout);
 userRouter.get("/current", verifyToken, currentUser);
 userRouter.patch(
   "/updateUser",
-  verifyToken,
-  upload.single("file"),
-  updateUserController
+  validateBody(userUpdateSchema),
+  updateProfileController
 );
 
 export default userRouter;
