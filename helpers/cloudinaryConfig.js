@@ -11,16 +11,16 @@ cloudinary.config({
 
 console.log(cloudinary.config());
 
-cloudinary.uploader.upload(
-  "https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-  { public_id: "olympic_flag" },
-  function (error, result) {
-    if (error) {
-      console.error("Error uploading image:", error);
-    } else {
-      console.log("Upload result:", result);
-    }
-  }
-);
+// cloudinary.uploader.upload(
+//   "https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
+//   { public_id: "olympic_flag" },
+//   function (error, result) {
+//     if (error) {
+//       console.error("Error uploading image:", error);
+//     } else {
+//       console.log("Upload result:", result);
+//     }
+//   }
+// );
 
 export default cloudinary;

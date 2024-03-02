@@ -9,7 +9,7 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
-  updateUserService,
+  updateProfileInDatabase,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
@@ -175,7 +175,7 @@ export const updateProfileController = async (req, res) => {
       const result = await cloudinary.uploader.upload(
         req.file.buffer.toString("base64"),
         {
-          public_id: `profile_photos/user_${id}`,
+          public_id: `profile_photos/${id}`,
         }
       );
       imageUrl = result.secure_url;
