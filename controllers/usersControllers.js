@@ -9,7 +9,6 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
-  updateUserService,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
