@@ -12,8 +12,16 @@ export const loginUserSchema = Joi.object({
 });
 
 export const userUpdateSchema = Joi.object({
-  name: Joi.string().min(1).max(255),
-  email: Joi.string().email(),
-  password: Joi.string().min(6).max(30),
-  avatarURL: Joi.string().uri().allow(""),
+  name: Joi.string().messages({
+    "string.empty": '"name" cannot be an empty field',
+  }),
+  email: Joi.string().pattern(emailRegex).messages({
+    "string.pattern.base": "Incorrect email format",
+    "string.empty": '"email" cannot be an empty field',
+  }),
+  password: Joi.string().min(6).messages({
+    "string.empty": '"password" cannot be an empty field',
+    "string.min": '"password" should have a minimum length of 6',
+  }),
+  avatarURL: Joi.any(),
 });

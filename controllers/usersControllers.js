@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import cloudinary from "../helpers/cloudinaryConfig.js";
+import util from "util";
 
 dotenv.config();
 
@@ -149,14 +150,13 @@ export const addAvatar = async (req, res, next) => {
   }
 };
 
+const uploadImageAsync = util.promisify(cloudinary.uploader.upload);
+
 export const uploadImageController = async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(
-      req.file.buffer.toString("base64"),
-      {
-        public_id: "uploaded_image",
-      }
-    );
+    const result = await uploadImageAsync(req.file.buffer.toString("base64"), {
+      public_id: "image",
+    });
 
     console.log("Image uploaded to Cloudinary:", result);
     res.json(result);
@@ -166,32 +166,26 @@ export const uploadImageController = async (req, res) => {
   }
 };
 
-export const updateProfileController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, email, currentPassword } = req.body;
-    let imageUrl;
+export const updateProfile = async (req, res) => {
+  const { _id } = req.user;
 
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(
-        req.file.buffer.toString("base64"),
-        {
-          public_id: `profile_photos/${id}`,
-        }
-      );
-      imageUrl = result.secure_url;
-    }
+  let avatarURL;
 
-    const updatedProfile = await updateProfileInDatabase(id, {
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await usersServices.updateAvatar(tmpUpload, _id);
+  }
+
+  if (req.body) {
+    const { name, email, password } = req.body;
+    const updatedUser = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
-      currentPassword,
-      avatarURL: imageUrl,
+      password,
+      avatarURL,
     });
-
-    res.json(updatedProfile);
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ error: "Unable to update profile." });
+    res.json({
+      updatedUser,
+    });
   }
 };

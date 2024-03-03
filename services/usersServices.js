@@ -51,39 +51,27 @@ export async function getUserByEmailWithPassword(email) {
   }
 }
 
-export const updateProfileInDatabase = async (id, updatedData) => {
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
+
+export const updateAvatar = async (tmpUpload, _id) => {
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+  });
+  const result = await cloudinary.uploader.upload(tmpUpload);
+  return result.url;
+};
+
+export const updateProfileInDatabase = async (userId, updatedData) => {
   try {
-    const user = await User.findById(id);
+    const updatedUser = await UserModel.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    });
 
-    if (!user) {
-      throw new Error("User not found");
-    }
-
-    user.name = updatedData.name;
-    user.email = updatedData.email;
-
-    if (updatedData.newPassword) {
-      const isCurrentPasswordValid = await bcrypt.compare(
-        updatedData.currentPassword,
-        user.password
-      );
-
-      if (!isCurrentPasswordValid) {
-        throw new Error("Current password is incorrect");
-      }
-
-      const hashedNewPassword = await bcrypt.hash(updatedData.newPassword, 10);
-      user.password = hashedNewPassword;
-    }
-
-    if (updatedData.avatarURL) {
-      user.avatarURL = updatedData.avatarURL;
-    }
-
-    const updatedUser = await user.save();
-
-    return updatedUser;
-  } catch (error) {
-    throw error;
+    return updatedUser || null;
+  } catch (err) {
+    console.log(err);
   }
 };
