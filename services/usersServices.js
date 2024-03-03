@@ -50,28 +50,28 @@ export async function getUserByEmailWithPassword(email) {
     console.error(error.message);
   }
 }
-export const uploadImage = async (imagePath) => {
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-  };
-  try {
-    const result = await cloudinary.uploader.upload(imagePath, options);
-    return result.secure_url;
-  } catch (error) {
-    console.error("error in Cloudinary:", error);
-    throw new Error("Помилка завантаження зображення");
-  }
+
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
+
+export const updateAvatar = async (tmpUpload, _id) => {
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+  });
+  const result = await cloudinary.uploader.upload(tmpUpload);
+  return result.url;
 };
 
-export const updateProfile = async (id, updatedData) => {
+export const updateProfileInDatabase = async (userId, updatedData) => {
   try {
-    const user = await User.findByIdAndUpdate(id, updatedData, {
+    const updatedUser = await UserModel.findByIdAndUpdate(userId, updatedData, {
       new: true,
     });
-    return user;
-  } catch (error) {
-    throw new Error("Unable to update user in the database.");
+
+    return updatedUser || null;
+  } catch (err) {
+    console.log(err);
   }
 };

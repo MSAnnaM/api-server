@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import cloudinary from "../helpers/cloudinaryConfig.js";
+import util from "util";
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
+  updateProfileInDatabase,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
@@ -148,42 +150,43 @@ export const addAvatar = async (req, res, next) => {
     next(er);
   }
 };
+
+const uploadImageAsync = util.promisify(cloudinary.uploader.upload);
+
 export const uploadImageController = async (req, res) => {
   try {
-    if (!req.file) {
-      throw new Error("No file provided");
-    }
+    const result = await uploadImageAsync(req.file.buffer.toString("base64"), {
+      public_id: "image",
+    });
 
-    const imagePath = req.file.path;
-    const result = await uploadImage(imagePath);
-    res.json({ imageUrl: result });
+    console.log("Image uploaded to Cloudinary:", result);
+    res.json(result);
   } catch (error) {
     console.error("Error uploading image:", error);
-    res.status(500).json({ error: "Unable to upload image" });
+    res.status(500).json({ error: "Unable to upload image." });
   }
 };
 
-export const updateProfileController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, email, password, imagePath } = req.body;
+export const updateProfile = async (req, res) => {
+  const { _id } = req.user;
 
-    let imageUrl;
-    if (imagePath) {
-      imageUrl = await uploadImage(imagePath);
-    }
+  let avatarURL;
 
-    const updatedData = {
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await usersServices.updateAvatar(tmpUpload, _id);
+  }
+
+  if (req.body) {
+    const { name, email, password } = req.body;
+    const updatedUser = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
       password,
-      avatarURL: imageUrl,
-    };
-
-    const updatedUser = await updateProfile(id, updatedData);
-    res.json(updatedUser);
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ error: "Unable to update profile." });
+      avatarURL,
+    });
+    res.json({
+      updatedUser,
+    });
   }
 };
