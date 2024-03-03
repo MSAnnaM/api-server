@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
-import cloudinary from "../helpers/cloudinaryConfig.js";
-import util from "util";
+import * as usersServices from "../services/usersServices.js";
 
 dotenv.config();
 
@@ -10,7 +9,6 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
-  updateProfileInDatabase,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import User from "../db/models/userModel.js";
@@ -147,22 +145,6 @@ export const addAvatar = async (req, res, next) => {
     res.json({ avatarURL });
   } catch (er) {
     next(er);
-  }
-};
-
-const uploadImageAsync = util.promisify(cloudinary.uploader.upload);
-
-export const uploadImageController = async (req, res) => {
-  try {
-    const result = await uploadImageAsync(req.file.buffer.toString("base64"), {
-      public_id: "image",
-    });
-
-    console.log("Image uploaded to Cloudinary:", result);
-    res.json(result);
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    res.status(500).json({ error: "Unable to upload image." });
   }
 };
 

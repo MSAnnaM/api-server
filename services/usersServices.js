@@ -1,5 +1,6 @@
 import User from "../db/models/userModel.js";
 import { signupToken } from "../helpers/token.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export async function userRegistration(data) {
   try {
@@ -66,7 +67,7 @@ export const updateAvatar = async (tmpUpload, _id) => {
 
 export const updateProfileInDatabase = async (userId, updatedData) => {
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(userId, updatedData, {
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     });
 
