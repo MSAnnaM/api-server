@@ -5,8 +5,8 @@ import { v2 as cloudinary } from "cloudinary";
 export async function userRegistration(data) {
   try {
     const newUser = await User.create(data);
-    const { id } = newUser;
-    const token = signupToken(id);
+    const { _id } = newUser;
+    const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
       newUser,
       { $set: { token } },
@@ -20,8 +20,8 @@ export async function userRegistration(data) {
 
 export async function userLogin(data) {
   try {
-    const { id } = data;
-    const token = signupToken(id);
+    const {_id } = data;
+    const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
       id,
       { $set: { token } },
