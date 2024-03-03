@@ -9,7 +9,7 @@ export async function userRegistration(data) {
     const result = await User.findByIdAndUpdate(
       newUser,
       { $set: { token } },
-      { new: true }
+      { new: true },
     );
     return result;
   } catch (error) {
@@ -24,7 +24,7 @@ export async function userLogin(data) {
     const result = await User.findByIdAndUpdate(
       id,
       { $set: { token } },
-      { new: true }
+      { new: true },
     );
 
     return result;

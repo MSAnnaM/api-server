@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import cloudinary from "../helpers/cloudinaryConfig.js";
 
 dotenv.config();
 
@@ -9,9 +8,10 @@ import {
   userLogin,
   getUserByEmail,
   getUserByEmailWithPassword,
-  updateUserService,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
+import { sendMail } from "../services/sendEmail.js";
 import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
@@ -60,7 +60,7 @@ export const userSignIn = async (req, res, next) => {
 
     const isPasswordValid = await bcrypt.compare(
       password,
-      existingUser.password
+      existingUser.password,
     );
 
     if (!isPasswordValid) {
@@ -114,7 +114,7 @@ export const userUpdateSubscription = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       id,
       { subscription },
-      { new: true }
+      { new: true },
     );
 
     res.json(updateUser);
@@ -187,3 +187,11 @@ export const updateProfileController = async (req, res) => {
     res.status(500).json({ error: "Unable to update profile." });
   }
 };
+
+export const sendMails = trycatchFunc(async (req, res) => {
+  const { email, comment } = req.body;
+
+  await sendMail(email, comment);
+
+  res.json({ message: "Message was sent successfully!" });
+});
