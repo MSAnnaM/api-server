@@ -31,7 +31,6 @@ export const userSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      theme: "dark",
     };
 
     const newUser = await userRegistration(user);
@@ -72,7 +71,10 @@ export const userSignIn = async (req, res, next) => {
     res.json({
       token: user.token,
       user: {
+        name: user.name,
         email: user.email,
+        avatarUrl: user.avatarURL,
+        theme: user.theme,
       },
     });
   } catch (er) {
