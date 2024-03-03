@@ -1,4 +1,5 @@
 import Joi from "joi";
+const emailRegex = new RegExp("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
 export const userRegistrationSchema = Joi.object({
   email: Joi.string().email().required(),
