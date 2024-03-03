@@ -19,11 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.use(
-  "/api/users",
+  "/api-docs",
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument),
-  userRouter
 );
+app.use("/api/users", userRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
