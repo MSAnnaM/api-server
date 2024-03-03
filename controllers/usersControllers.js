@@ -20,6 +20,7 @@ export const userSignup = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
+    
 
     if (existingUser) {
       throw HttpError(409, "Email in use");
