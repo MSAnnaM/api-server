@@ -5,6 +5,8 @@ import {
   loginUserSchema,
 } from "../schemas/userSchemas.js";
 import validateBody from "../helpers/validateBody.js";
+import * as userSchema from "../schemas/userSchemas.js";
+import * as usersControllers from "../controllers/usersControllers.js";
 import {
   userSignup,
   userSignIn,
@@ -27,7 +29,12 @@ userRouter.put(
   verifyToken,
   upload.single("avatarURL"),
   validateBody(userUpdateSchema),
-  updateProfile
+updateProfile
+);
+userRouter.post(
+  "/help",
+  validateBody(userSchema.sendMailSchema),
+  usersControllers.sendMails,
 );
 
 export default userRouter;

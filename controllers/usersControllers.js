@@ -11,6 +11,8 @@ import {
   getUserByEmailWithPassword,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
+import { sendMail } from "../services/sendEmail.js";
 import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
@@ -59,7 +61,7 @@ export const userSignIn = async (req, res, next) => {
 
     const isPasswordValid = await bcrypt.compare(
       password,
-      existingUser.password
+      existingUser.password,
     );
 
     if (!isPasswordValid) {
@@ -116,7 +118,7 @@ export const userUpdateSubscription = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       id,
       { subscription },
-      { new: true }
+      { new: true },
     );
 
     res.json(updateUser);
@@ -174,3 +176,15 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
+export const sendMails = trycatchFunc(async (req, res) => {
+  const { email, comment } = req.body;
+
+  const result = await sendMail(email, comment);
+
+  if (result) {
+    res.json({ message: "Message was sent successfully!" });
+  } else {
+    res.status(500).json({ error: "Failed to send message" });
+  }
+});
