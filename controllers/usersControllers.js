@@ -191,7 +191,11 @@ export const updateProfileController = async (req, res) => {
 export const sendMails = trycatchFunc(async (req, res) => {
   const { email, comment } = req.body;
 
-  await sendMail(email, comment);
+  const result = await sendMail(email, comment);
 
-  res.json({ message: "Message was sent successfully!" });
+  if (result) {
+    res.json({ message: "Message was sent successfully!" });
+  } else {
+    res.status(500).json({ error: "Failed to send message" });
+  }
 });

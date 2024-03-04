@@ -28,6 +28,6 @@ export const sendMailSchema = Joi.object({
   }),
   comment: Joi.string().messages({
     "string.empty": '"comment" cannot be an empty field',
-    "any.required": 'missing required field "email"',
+    "any.required": 'missing required field "comment"',
   }),
 });

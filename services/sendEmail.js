@@ -13,8 +13,8 @@ export const sendMail = async (email, comment) => {
   });
 
   const mailOptions = {
-    from: "intrum2025@ukr.net",
-    to: "taskpro.project@gmail.com",
+    from: UKR_NET_FROM,
+    to: "pafiyo1799@comsb.com",
     subject: "Need Help",
     html: `<h1>Email to answer: ${email}<br>Comment: ${comment}</h1>`,
     text: `Email to answer: ${email}\nComment: ${comment}`,
