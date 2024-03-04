@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import * as usersServices from "../services/usersServices.js";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ export const userSignup = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
+    
 
     if (existingUser) {
       throw HttpError(409, "Email in use");
@@ -31,7 +33,6 @@ export const userSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      theme: "dark",
     };
 
     const newUser = await userRegistration(user);
@@ -72,7 +73,10 @@ export const userSignIn = async (req, res, next) => {
     res.json({
       token: user.token,
       user: {
+        name: user.name,
         email: user.email,
+        avatarUrl: user.avatarURL,
+        theme: user.theme,
       },
     });
   } catch (er) {
@@ -148,43 +152,28 @@ export const addAvatar = async (req, res, next) => {
     next(er);
   }
 };
-export const uploadImageController = async (req, res) => {
-  try {
-    if (!req.file) {
-      throw new Error("No file provided");
-    }
 
-    const imagePath = req.file.path;
-    const result = await uploadImage(imagePath);
-    res.json({ imageUrl: result });
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    res.status(500).json({ error: "Unable to upload image" });
+export const updateProfile = async (req, res) => {
+  const { _id } = req.user;
+
+  let avatarURL;
+
+  if (req.file) {
+    const { path: tmpUpload } = req.file;
+    avatarURL = await usersServices.updateAvatar(tmpUpload, _id);
   }
-};
 
-export const updateProfileController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, email, password, imagePath } = req.body;
-
-    let imageUrl;
-    if (imagePath) {
-      imageUrl = await uploadImage(imagePath);
-    }
-
-    const updatedData = {
+  if (req.body) {
+    const { name, email, password } = req.body;
+    const updatedUser = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
       password,
-      avatarURL: imageUrl,
-    };
-
-    const updatedUser = await updateProfile(id, updatedData);
-    res.json(updatedUser);
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ error: "Unable to update profile." });
+      avatarURL,
+    });
+    res.json({
+      updatedUser,
+    });
   }
 };
 

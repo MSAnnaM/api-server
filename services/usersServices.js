@@ -1,11 +1,12 @@
 import User from "../db/models/userModel.js";
 import { signupToken } from "../helpers/token.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export async function userRegistration(data) {
   try {
     const newUser = await User.create(data);
-    const { id } = newUser;
-    const token = signupToken(id);
+    const { _id } = newUser;
+    const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
       newUser,
       { $set: { token } },
@@ -19,10 +20,10 @@ export async function userRegistration(data) {
 
 export async function userLogin(data) {
   try {
-    const { id } = data;
-    const token = signupToken(id);
+    const {_id } = data;
+    const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
-      id,
+      _id,
       { $set: { token } },
       { new: true },
     );
@@ -50,28 +51,28 @@ export async function getUserByEmailWithPassword(email) {
     console.error(error.message);
   }
 }
-export const uploadImage = async (imagePath) => {
-  const options = {
-    use_filename: true,
-    unique_filename: false,
-    overwrite: true,
-  };
-  try {
-    const result = await cloudinary.uploader.upload(imagePath, options);
-    return result.secure_url;
-  } catch (error) {
-    console.error("error in Cloudinary:", error);
-    throw new Error("Помилка завантаження зображення");
-  }
+
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
+
+export const updateAvatar = async (tmpUpload, _id) => {
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+  });
+  const result = await cloudinary.uploader.upload(tmpUpload);
+  return result.url;
 };
 
-export const updateProfile = async (id, updatedData) => {
+export const updateProfileInDatabase = async (userId, updatedData) => {
   try {
-    const user = await User.findByIdAndUpdate(id, updatedData, {
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     });
-    return user;
-  } catch (error) {
-    throw new Error("Unable to update user in the database.");
+
+    return updatedUser || null;
+  } catch (err) {
+    console.log(err);
   }
 };

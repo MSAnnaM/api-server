@@ -12,7 +12,7 @@ import {
   userSignIn,
   userLogout,
   currentUser,
-  updateProfileController,
+  updateProfile,
 } from "../controllers/usersControllers.js";
 import { verifyToken } from "../midellwares/checkToken.js";
 import upload from "../midellwares/upload.js";
@@ -23,10 +23,13 @@ userRouter.post("/register", validateBody(userRegistrationSchema), userSignup);
 userRouter.post("/login", validateBody(loginUserSchema), userSignIn);
 userRouter.post("/logout", verifyToken, userLogout);
 userRouter.get("/current", verifyToken, currentUser);
-userRouter.patch(
-  "/updateUser",
+
+userRouter.put(
+  "/update",
+  verifyToken,
+  upload.single("avatarURL"),
   validateBody(userUpdateSchema),
-  updateProfileController,
+updateProfile
 );
 userRouter.post(
   "/help",
