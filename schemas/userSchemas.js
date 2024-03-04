@@ -1,8 +1,6 @@
 import Joi from "joi";
 const emailRegex = new RegExp("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
-const emailRegex = new RegExp("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
-
 export const userRegistrationSchema = Joi.object({
   email: Joi.string().pattern(emailRegex).messages({
     "string.pattern.base": "Incorrect email format",
