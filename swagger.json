@@ -371,16 +371,16 @@
           "avatarURL": {
             "type": "string",
             "description": "Users avatar"
-          },
-          "MessageResponse": {
-            "type": "string",
-            "example": "Message was sent successfully!"
-          },
-          "MessageError": {
-            "type": "string",
-            "example": "Failed to send message"
           }
         }
+      },
+      "MessageResponse": {
+        "type": "string",
+        "example": "Message was sent successfully!"
+      },
+      "MessageError": {
+        "type": "string",
+        "example": "Failed to send message"
       }
     }
   }
