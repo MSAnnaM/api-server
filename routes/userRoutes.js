@@ -24,7 +24,7 @@ userRouter.post("/login", validateBody(loginUserSchema), userSignIn);
 userRouter.post("/logout", verifyToken, userLogout);
 userRouter.get("/current", verifyToken, currentUser);
 
-userRouter.put(
+userRouter.patch(
   "/update",
   verifyToken,
   upload.single("avatarURL"),
