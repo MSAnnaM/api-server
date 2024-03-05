@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
 
+const themeList = ["light", "violet", "dark"];
+
 const userModel = Schema(
   {
     name: {
@@ -16,6 +18,11 @@ const userModel = Schema(
       type: String,
       required: true,
     },
+    theme: {
+      type: String,
+      enum: themeList,
+      default: "dark",
+    },
     avatarUrl: {
       type: String,
     },
@@ -29,9 +36,8 @@ const userModel = Schema(
       default: null,
     },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
-
 
 const registerUserSchema = Joi.object({
   name: Joi.string().required().max(16),
