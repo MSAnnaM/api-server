@@ -1,5 +1,5 @@
-import { ColumnModel } from "../db/models/columnModel";
-import HttpError from "../helpers/HttpError";
+import { ColumnModel } from "../db/models/columnModel.js";
+import HttpError from "../helpers/HttpError.js";
 
 export const getAllColumnByBoard = async (id, owner) => {
   const columns = await ColumnModel.find({ boardId: id, owner });
