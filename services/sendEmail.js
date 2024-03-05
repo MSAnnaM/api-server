@@ -5,7 +5,8 @@ const { UKR_PASSWORD, UKR_NET_FROM } = process.env;
 
 export const sendMail = async (email, comment) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.ukr.net",
+    port: 465, // 25, 465, 2525
     auth: {
       user: UKR_NET_FROM,
       pass: UKR_PASSWORD,
