@@ -1,5 +1,5 @@
-import { BordModel } from "../db/models/BordModel";
-import HttpError from "../helpers/HttpError";
+import { BordModel } from "../db/models/BordModel.js";
+import HttpError from "../helpers/HttpError.js";
 
 export const allBords = (owner) => BordModel.find({ owner });
 

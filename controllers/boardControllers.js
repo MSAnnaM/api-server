@@ -1,5 +1,5 @@
-import HttpError from "../helpers/HttpError";
-import * as bordService from "../services/bordService";
+import HttpError from "../helpers/HttpError.js";
+import * as bordService from "../services/bordService.js";
 
 export const newBords = async (req, res) => {
   const { _id: owner } = req.user;

@@ -1,17 +1,17 @@
-import { express } from "express";
-import { verifyToken } from "../midellwares/checkToken";
-import checkIsValidId from "../midellwares/isValidId";
-import { getAllColumnByBoard } from "../services/columnService";
-import validateBody from "../helpers/validateBody";
+import  express  from "express";
+import { verifyToken } from "../midellwares/checkToken.js";
+import checkIsValidId from "../midellwares/isValidId.js";
+import { getAllColumnByBoard } from "../services/columnService.js";
+import validateBody from "../helpers/validateBody.js";
 import {
   createColumnSchema,
   updateColumnSchema,
-} from "../schemas/columnSchema";
+} from "../schemas/columnSchema.js";
 import {
   createColumn,
   removeColumn,
   updateColumn,
-} from "../controllers/columnControllers";
+} from "../controllers/columnControllers.js";
 
 columnRouter = express.Router();
 

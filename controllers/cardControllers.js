@@ -1,5 +1,5 @@
-import HttpError from "../helpers/HttpError";
-import * as cardServices from "../services/cardServices";
+import HttpError from "../helpers/HttpError.js";
+import * as cardServices from "../services/cardServices.js";
 
 export const getters = async (req, res) => {
   const { _id: owner } = req.user;
