@@ -36,6 +36,15 @@
                 }
               }
             }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginError"
+                }
+              }
+            }
           }
         }
       }
@@ -232,6 +241,37 @@
           }
         }
       }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Boards"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The token issued to the current user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoardsGetResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -262,7 +302,6 @@
       "RegistrationResponse": {
         "type": "object",
         "properties": {
-          "type": "object",
           "user": {
             "type": "object",
             "properties": {
@@ -381,6 +420,10 @@
       "MessageError": {
         "type": "string",
         "example": "Failed to send message"
+      },
+      "BoardsGetResponse": {
+        "type": "string",
+        "example": "Boards found"
       }
     }
   }
