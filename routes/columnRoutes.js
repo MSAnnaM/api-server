@@ -1,6 +1,9 @@
-import  express  from "express";
+import express from "express";
 import { verifyToken } from "../midellwares/checkToken.js";
-import checkIsValidId from "../midellwares/isValidId.js";
+// import {
+//   checkIsValidBoardId,
+//   checkIsValidColumnId,
+// } from "../midellwares/isValidId.js";
 import { getAllColumnByBoard } from "../services/columnService.js";
 import validateBody from "../helpers/validateBody.js";
 import {
@@ -9,18 +12,21 @@ import {
 } from "../schemas/columnSchema.js";
 import {
   createColumn,
+  getColumns,
   removeColumn,
   updateColumn,
 } from "../controllers/columnControllers.js";
 
 const columnRouter = express.Router();
 
-columnRouter.get("/:bordId", verifyToken, checkIsValidId, getAllColumnByBoard);
+columnRouter.get("/:boardId", verifyToken, getColumns);
+
+// checkIsValidBoardId,
 
 columnRouter.post(
   "/:boardId",
   verifyToken,
-  checkIsValidId,
+  // checkIsValidBoardId,
   validateBody(createColumnSchema),
   createColumn
 );
@@ -28,11 +34,16 @@ columnRouter.post(
 columnRouter.put(
   "/:columnId",
   verifyToken,
-  checkIsValidId,
+  // checkIsValidColumnId,
   validateBody(updateColumnSchema),
   updateColumn
 );
 
-columnRouter.delete("/:columnId", verifyToken, checkIsValidId, removeColumn);
+columnRouter.delete(
+  "/:columnId",
+  verifyToken,
+  // checkIsValidColumnId,
+  removeColumn
+);
 
 export default columnRouter;
