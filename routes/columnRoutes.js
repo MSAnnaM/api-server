@@ -13,7 +13,7 @@ import {
   updateColumn,
 } from "../controllers/columnControllers.js";
 
-columnRouter = express.Router();
+const columnRouter = express.Router();
 
 columnRouter.get("/:bordId", verifyToken, checkIsValidId, getAllColumnByBoard);
 
