@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../midellwares/checkToken.js";
-import checkIsValidId from "../midellwares/isValidId.js";
+import { checkIsValidId } from "../midellwares/isValidId.js";
 import { getAllColumnByBoard } from "../services/columnService.js";
 import validateBody from "../helpers/validateBody.js";
 import {

@@ -4,18 +4,18 @@ import * as cardServices from "../services/cardServices.js";
 
 export const getters = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
+  const id = req.params.boardId;
 
-  const cards = await cardServices.allCards(owner);
+  const cards = await cardServices.allCards(id, owner);
 
   res.json(cards);
 });
 
 export const createCard = trycatchFunc(async (req, res) => {
-  const id = req.params.columnId;
   const { _id: owner } = req.user;
   const { body } = req;
 
-  const newCard = await cardServices.newCards(id, owner, body);
+  const newCard = await cardServices.newCards(owner, body);
 
   res.status(201).json(newCard);
 });
@@ -46,4 +46,18 @@ export const updateCardController = trycatchFunc(async (req, res) => {
     throw HttpError(404, `Card with id ${id} not found`);
   }
   res.json(updatedCard);
+});
+
+export const updateColumnIdinCard = trycatchFunc(async (req, res) => {
+  const id = req.params.cardId;
+  const { body } = req;
+  const { _id: owner } = req.user;
+
+  const updateCards = await cardServices.columnUpdateInCard(id, owner, body);
+
+  if (!updateCards) {
+    throw HttpError(404, "Card ${id} does not exist or column is empty");
+  }
+  console.log(updateCards);
+  res.json(updateCards);
 });

@@ -1,6 +1,6 @@
-import  express  from "express";
+import express from "express";
 import { verifyToken } from "../midellwares/checkToken.js";
-import checkIsValidId from "../midellwares/isValidId.js";
+import { checkIsValidId } from "../midellwares/isValidId.js";
 import validateBody from "../helpers/validateBody.js";
 import { cardSchema, updateCardSchema } from "../schemas/cardSchema.js";
 import {

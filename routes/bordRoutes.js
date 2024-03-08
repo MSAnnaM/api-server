@@ -11,7 +11,7 @@ import {
   createBoardSchema,
   updateBoardSchema,
 } from "../schemas/boardSchema.js";
-import checkIsValidId from "../midellwares/isValidId.js";
+import { checkIsValidId } from "../midellwares/isValidId.js";
 
 const boardRouter = express.Router();
 
