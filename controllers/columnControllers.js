@@ -1,4 +1,5 @@
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
 import * as colomnServices from "../services/columnService.js";
 
 export const getColumns = trycatchFunc(async (req, res) => {
