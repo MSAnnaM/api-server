@@ -1,5 +1,5 @@
 import { isValidObjectId } from "mongoose";
-import HttpError from "../helpers/HttpError";
+import HttpError from "../helpers/HttpError.js";
 
 export const checkIsValidId = (req, _, next) => {
   const { boardId, columnId, cardId } = req.params;
@@ -7,8 +7,7 @@ export const checkIsValidId = (req, _, next) => {
   const id = boardId || columnId || cardId;
 
   if (!isValidObjectId(id)) {
-    next(HttpError(400, `Requested id(${id}) is invalid`));
-    return;
+    return next(HttpError(400, `Requested id(${id}) is invalid`));
   }
 
   next();
