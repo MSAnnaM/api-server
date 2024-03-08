@@ -20,7 +20,7 @@ export async function userRegistration(data) {
 
 export async function userLogin(data) {
   try {
-    const {_id } = data;
+    const { _id } = data;
     const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
       _id,
@@ -75,4 +75,8 @@ export const updateProfileInDatabase = async (userId, updatedData) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const updateTheme = async (userId, theme) => {
+  return User.findByIdAndUpdate({ _id: userId }, { theme }, { new: true });
 };

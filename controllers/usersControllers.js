@@ -22,7 +22,6 @@ export const userSignup = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
-    
 
     if (existingUser) {
       throw HttpError(409, "Email in use");
@@ -188,3 +187,11 @@ export const sendMails = trycatchFunc(async (req, res) => {
     res.status(500).json({ error: "Failed to send message" });
   }
 });
+
+export const updateTheme = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { theme } = req.body;
+
+  const user = await usersServices.updateTheme(userId, theme);
+  res.json({ theme: user.theme });
+};
