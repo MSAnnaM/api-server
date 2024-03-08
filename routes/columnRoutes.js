@@ -18,9 +18,8 @@ const columnRouter = express.Router();
 columnRouter.get("/:boardId", verifyToken, checkIsValidId, getAllColumnByBoard);
 
 columnRouter.post(
-  "/:boardId",
+  "/",
   verifyToken,
-  checkIsValidId,
   validateBody(createColumnSchema),
   createColumn
 );
