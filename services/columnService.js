@@ -16,7 +16,7 @@ export const createNewColumn = async (boardId, owner, data) => {
   if (column) {
     throw HttpError(409, "This column already exists in this board.");
   }
-  const newColumn = await columnModel.create({ ...data, owner, boardId });
+  const newColumn = await ColumnModel.create({ ...data, owner, boardId });
 
   return newColumn;
 };
