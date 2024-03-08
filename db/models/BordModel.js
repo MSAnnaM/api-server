@@ -24,7 +24,7 @@ const bordSchema = new Schema(
     },
     background: {
       type: String,
-      default: "default.jpg",
+      default: "1",
     },
     icon: {
       type: String,
