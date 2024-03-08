@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import Joi from "joi";
 
 const userModel = Schema(
   {
@@ -30,6 +31,26 @@ const userModel = Schema(
   },
   { versionKey: false }
 );
+
+
+const registerUserSchema = Joi.object({
+  name: Joi.string().required().max(16),
+  email: Joi.string().email().required(),
+  password: Joi.string().required().min(8),
+  theme: Joi.string(),
+});
+
+const loginUserSchema = Joi.object({
+  email: Joi.string().email().required().max(16),
+  password: Joi.string().required().min(8),
+});
+
+const updateUserSchema = Joi.object({
+  name: Joi.string().max(16),
+  email: Joi.string().email(),
+  password: Joi.string().min(8),
+  avatarUrl: Joi.string(),
+});
 
 const User = model("user", userModel);
 

@@ -10,6 +10,9 @@ const bordSchema = new Schema(
       type: String,
       default: "default.jpg",
     },
+    icon: {
+      type: String,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",

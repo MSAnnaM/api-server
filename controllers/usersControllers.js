@@ -11,6 +11,8 @@ import {
   getUserByEmailWithPassword,
 } from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
+import { sendMail } from "../services/sendEmail.js";
 import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
@@ -20,6 +22,7 @@ export const userSignup = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
+    
 
     if (existingUser) {
       throw HttpError(409, "Email in use");
@@ -30,7 +33,6 @@ export const userSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      theme: "dark",
     };
 
     const newUser = await userRegistration(user);
@@ -59,7 +61,7 @@ export const userSignIn = async (req, res, next) => {
 
     const isPasswordValid = await bcrypt.compare(
       password,
-      existingUser.password
+      existingUser.password,
     );
 
     if (!isPasswordValid) {
@@ -71,7 +73,10 @@ export const userSignIn = async (req, res, next) => {
     res.json({
       token: user.token,
       user: {
+        name: user.name,
         email: user.email,
+        avatarUrl: user.avatarURL,
+        theme: user.theme,
       },
     });
   } catch (er) {
@@ -113,7 +118,7 @@ export const userUpdateSubscription = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       id,
       { subscription },
-      { new: true }
+      { new: true },
     );
 
     res.json(updateUser);
@@ -171,3 +176,15 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
+export const sendMails = trycatchFunc(async (req, res) => {
+  const { email, comment } = req.body;
+
+  const result = await sendMail(email, comment);
+
+  if (result) {
+    res.json({ message: "Message was sent successfully!" });
+  } else {
+    res.status(500).json({ error: "Failed to send message" });
+  }
+});

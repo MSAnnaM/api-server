@@ -6,6 +6,7 @@
     "dev": "nodemon ./server.js"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.1",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.0.2",
     "cors": "^2.8.5",
@@ -20,7 +21,9 @@
     "multer": "^1.4.5-lts.1",
     "nanoid": "^5.0.6",
     "nodemailer": "^6.9.10",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

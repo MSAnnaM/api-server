@@ -1,5 +1,5 @@
-import { CardModel } from "../db/models/cardModel";
-import HttpError from "../helpers/HttpError";
+import { CardModel } from "../db/models/cardModel.js";
+import HttpError from "../helpers/HttpError.js";
 
 export const allCards = async (owner) => {
   const cards = await CardModel.find({ owner });

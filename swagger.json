@@ -1,0 +1,387 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Api-server",
+    "description": "The API for the EatBacon IOT project",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/api-server/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/current": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/help": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentError"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": [
+          "email,password, name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Users name",
+            "example": "name"
+          },
+          "email": {
+            "type": "string",
+            "description": "Users email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "Users password",
+            "example": "12345678"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "type": "object",
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Users name",
+                "example": "name"
+              },
+              "email": {
+                "type": "string",
+                "description": "Users email",
+                "format": "email"
+              },
+              "theme": {
+                "type": "string",
+                "description": "Users theme",
+                "example": "dark"
+              }
+            }
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email,password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Users email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "Users password",
+            "example": "12345678"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "Users email",
+                "format": "email"
+              }
+            }
+          }
+        }
+      },
+      "LoginError": {
+        "type": "string",
+        "example": "Email or password is wrong"
+      },
+      "LogoutResponse": {
+        "type": "string",
+        "example": "Not authorized"
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email",
+            "example": "john@example.com"
+          }
+        }
+      },
+      "CurrentError": {
+        "type": "string",
+        "example": "Not authorized"
+      },
+      "UpdateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email",
+            "example": "john@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Users password",
+            "example": "12345678"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "Users avatar"
+          }
+        }
+      },
+      "MessageResponse": {
+        "type": "string",
+        "example": "Message was sent successfully!"
+      },
+      "MessageError": {
+        "type": "string",
+        "example": "Failed to send message"
+      }
+    }
+  }
+}

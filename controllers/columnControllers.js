@@ -1,5 +1,5 @@
-import HttpError from "../helpers/HttpError";
-import * as colomnServices from "../services/columnService";
+import HttpError from "../helpers/HttpError.js";
+import * as colomnServices from "../services/columnService.js";
 
 export const getColumns = trycatchFunc(async (req, res) => {
   const id = req.params.boardId;

@@ -3,5 +3,4 @@ node_modules/
 .idea
 .vscode
 .DS_Store
-package-lock.json
-package.json
+pul_requests.txt
