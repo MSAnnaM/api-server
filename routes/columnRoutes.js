@@ -1,8 +1,8 @@
-import { express } from "express";
-import { verifyToken } from "../midellwares/checkToken";
-import checkIsValidId from "../midellwares/isValidId";
-import { getAllColumnByBoard } from "../services/columnService";
-import validateBody from "../helpers/validateBody";
+import express from "express";
+import { verifyToken } from "../midellwares/checkToken.js";
+import checkIsValidId from "../midellwares/isValidId.js";
+import { getAllColumnByBoard } from "../services/columnService.js";
+import validateBody from "../helpers/validateBody.js";
 import {
   createColumnSchema,
   updateColumnSchema,
@@ -15,7 +15,7 @@ import {
 
 columnRouter = express.Router();
 
-columnRouter.get("/:bordId", verifyToken, checkIsValidId, getAllColumnByBoard);
+columnRouter.get("/:boardId", verifyToken, checkIsValidId, getAllColumnByBoard);
 
 columnRouter.post(
   "/:boardId",
