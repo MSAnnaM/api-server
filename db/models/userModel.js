@@ -18,6 +18,7 @@ const userModel = Schema(
     },
     avatarUrl: {
       type: String,
+      default: "",
     },
     theme: {
       type: String,
@@ -31,7 +32,6 @@ const userModel = Schema(
   },
   { versionKey: false }
 );
-
 
 const registerUserSchema = Joi.object({
   name: Joi.string().required().max(16),
