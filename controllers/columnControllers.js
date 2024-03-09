@@ -31,7 +31,7 @@ export const removeColumn = trycatchFunc(async (req, res) => {
   if (!removedColumn) {
     throw HttpError(404, `Column with id${id} not found`);
   }
-  res.json({ message: "Deleted successfully" });
+  res.json({ id, message: "Deleted successfully" });
 });
 
 export const updateColumn = trycatchFunc(async (req, res) => {

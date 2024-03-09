@@ -29,22 +29,21 @@ userRouter.patch(
   "/current/theme",
   verifyToken,
   validateBody(updateThemeSchema),
-  usersControllers.updateTheme,
+  usersControllers.updateTheme
 );
 
 userRouter.patch(
   "/update",
   verifyToken,
   validateBody(userUpdateSchema),
-  upload.single('file'),
+  upload.single("file"),
   addAvatar,
-updateProfile
+  updateProfile
 );
 userRouter.post(
   "/help",
   validateBody(userSchema.sendMailSchema),
-  usersControllers.sendMails,
+  usersControllers.sendMails
 );
 
 export default userRouter;
-
