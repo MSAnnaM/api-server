@@ -1,10 +1,10 @@
-import multer from "multer";
+  import multer from "multer";
 import path from "path";
 
-const tmpDir = path.resolve("tmp");
+const tempDir = path.resolve("tmp");
 
 const multerConfig = multer.diskStorage({
-  destination: tmpDir,
+  destination: tempDir,
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },

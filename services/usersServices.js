@@ -55,14 +55,18 @@ export async function getUserByEmailWithPassword(email) {
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
   process.env;
 
-export const updateAvatar = async (tmpUpload, _id) => {
-  cloudinary.config({
-    cloud_name: CLOUDINARY_CLOUD_NAME,
-    api_key: CLOUDINARY_API_KEY,
-    api_secret: CLOUDINARY_API_SECRET,
-  });
-  const result = await cloudinary.uploader.upload(tmpUpload);
-  return result.url;
+export const updateAvatar = async (file) => {
+  try {
+    cloudinary.config({
+      cloud_name: CLOUDINARY_CLOUD_NAME,
+      api_key: CLOUDINARY_API_KEY,
+      api_secret: CLOUDINARY_API_SECRET,
+    });
+    const result = await cloudinary.uploader.upload(file);
+    return result.url;
+  } catch (er) {
+    console.log(er);
+  }
 };
 
 export const updateProfileInDatabase = async (userId, updatedData) => {
@@ -70,7 +74,7 @@ export const updateProfileInDatabase = async (userId, updatedData) => {
     const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     });
-
+    
     return updatedUser || null;
   } catch (err) {
     console.log(err);
