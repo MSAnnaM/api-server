@@ -1,23 +1,28 @@
 import Joi from "joi";
 
 export const createBoardSchema = Joi.object({
-  name: Joi.string().required().messages({
+  name: Joi.string().required().label("Name").messages({
     "string.empty": '"name" cannot be an empty field',
-    "any.required": 'missing required fild "name"',
+    "any.required": 'missing required field "name"',
   }),
-  background: Joi.string().messages({
-    "string.base": '"Background" must be a string',
+  icon: Joi.string().default("four-circles").label("Icon").messages({
+    "string.empty": '"Icon" field cannot be empty',
+    "any.default": 'Failed to set a default value for "Icon"',
   }),
-  icon: Joi.string().messages({
-    "string.base": '"Icon" must be a string',
+  background: Joi.string().default("1").label("Background").messages({
+    "string.empty": '"Background" field cannot be empty',
+    "any.default": 'Failed to set a default value for "Background"',
   }),
 });
 
 export const updateBoardSchema = Joi.object({
-  name: Joi.string().required().messages({
+  name: Joi.string().required().label("Name").messages({
     "string.empty": '"Name" cannot be an empty field',
   }),
-  background: Joi.string().messages({
-    "string.base": '"Background" must be a string',
+  icon: Joi.string().label("Icon").messages({
+    "string.empty": '"Icon" field cannot be empty',
+  }),
+  background: Joi.string().label("Background").messages({
+    "string.empty": '"Background" field cannot be empty',
   }),
 });

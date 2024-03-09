@@ -10,8 +10,8 @@ export const cardSchema = Joi.object({
     "any.required": '"Description" is a required field',
   }),
   priority: Joi.string()
-    .valid("low", "medium", "high")
-    .default("medium")
+    .valid("Without priority", "Low", "Medium", "High")
+    .default("Low")
     .label("Priority")
     .messages({
       "any.only": 'Invalid value for "Priority" field',
@@ -20,6 +20,14 @@ export const cardSchema = Joi.object({
   deadline: Joi.date().required().label("Deadline").messages({
     "any.required": '"Deadline" is a required field',
     "date.base": '"Deadline" field must be a date',
+  }),
+  boardId: Joi.string().required().label("Id").messages({
+    "string.empty": '"Id" cannot be an empty field',
+    "any.required": 'Missing required field "Id"',
+  }),
+  columnId: Joi.string().required().label("Id").messages({
+    "string.empty": '"Id" cannot be an empty field',
+    "any.required": 'Missing required field "Id"',
   }),
 });
 
@@ -40,5 +48,15 @@ export const updateCardSchema = Joi.object({
     }),
   deadline: Joi.date().label("Deadline").messages({
     "date.base": '"Deadline" field must be a date',
+  }),
+  columnId: Joi.string().label("Id").messages({
+    "string.empty": '"Id" cannot be empty',
+  }),
+});
+
+export const updateColumnIdinCardSchema = Joi.object({
+  columnId: Joi.string().required().label("Id").messages({
+    "string.empty": '"Id" cannot be an empty field',
+    "any.required": 'Missing required field "Id"',
   }),
 });

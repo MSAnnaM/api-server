@@ -2,6 +2,9 @@ import User from "../db/models/userModel.js";
 import { signupToken } from "../helpers/token.js";
 import { v2 as cloudinary } from "cloudinary";
 
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
+
 export async function userRegistration(data) {
   try {
     const newUser = await User.create(data);
@@ -10,7 +13,7 @@ export async function userRegistration(data) {
     const result = await User.findByIdAndUpdate(
       newUser,
       { $set: { token } },
-      { new: true },
+      { new: true }
     );
     return result;
   } catch (error) {
@@ -20,12 +23,12 @@ export async function userRegistration(data) {
 
 export async function userLogin(data) {
   try {
-    const {_id } = data;
+    const { _id } = data;
     const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
       _id,
       { $set: { token } },
-      { new: true },
+      { new: true }
     );
 
     return result;
@@ -52,21 +55,14 @@ export async function getUserByEmailWithPassword(email) {
   }
 }
 
-const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
-  process.env;
-
-export const updateAvatar = async (file) => {
-  try {
-    cloudinary.config({
-      cloud_name: CLOUDINARY_CLOUD_NAME,
-      api_key: CLOUDINARY_API_KEY,
-      api_secret: CLOUDINARY_API_SECRET,
-    });
-    const result = await cloudinary.uploader.upload(file);
-    return result.url;
-  } catch (er) {
-    console.log(er);
-  }
+export const updateAvatar = async (tmpUpload, _id) => {
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key: CLOUDINARY_API_KEY,
+    api_secret: CLOUDINARY_API_SECRET,
+  });
+  const result = await cloudinary.uploader.upload(tmpUpload);
+  return result.url;
 };
 
 export const updateProfileInDatabase = async (userId, updatedData) => {
