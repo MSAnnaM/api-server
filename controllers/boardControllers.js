@@ -15,7 +15,7 @@ export const deleteBord = trycatchFunc(async (req, res) => {
   const board = await bordService.deleteBord(owner, id);
 
   if (!board) {
-    throw HttpError(404, `Bord id ${id} not found`);
+    throw HttpError(404, `Bord id ${id} deleted! `);
   }
   res.json({ message: "Bord  deleted!" });
 });
@@ -25,10 +25,10 @@ export const createBord = trycatchFunc(async (req, res) => {
 
   const newBoard = await bordService.addBord(owner, req.body);
 
-  if (newBoard && newBoard.error) {
-    throw HttpError(409, newBoard.error);
+  if (newBoard) {
+    throw HttpError(409, "This name is already in use");
   }
-  res.status(201).json(newBoard);
+  res.json("Succses!").json(newBoard);
 });
 
 export const updateBordcontroller = trycatchFunc(async (req, res) => {
