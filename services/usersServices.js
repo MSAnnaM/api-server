@@ -70,9 +70,13 @@ export const updateProfileInDatabase = async (userId, updatedData) => {
     const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     });
-
+    
     return updatedUser || null;
   } catch (err) {
     console.log(err);
   }
+};
+
+export const updateTheme = async (userId, theme) => {
+  return User.findByIdAndUpdate({ _id: userId }, { theme }, { new: true });
 };
