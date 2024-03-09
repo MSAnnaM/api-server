@@ -25,7 +25,7 @@ export const createBord = trycatchFunc(async (req, res) => {
 
   const newBoard = await bordService.addBord(owner, req.body);
 
-  if (newBoard.error) {
+  if (newBoard && newBoard.error) {
     throw HttpError(409, newBoard.error);
   }
   res.status(201).json(newBoard);
