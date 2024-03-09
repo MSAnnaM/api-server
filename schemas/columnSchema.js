@@ -5,6 +5,10 @@ export const createColumnSchema = Joi.object({
     "string.empty": '"Title" cannot be an empty field',
     "any.required": 'Missing required field "Title"',
   }),
+  boardId: Joi.string().required().label("Id").messages({
+    "string.empty": '"Id" cannot be an empty field',
+    "any.required": 'Missing required field "Id"',
+  }),
 });
 
 export const updateColumnSchema = Joi.object({

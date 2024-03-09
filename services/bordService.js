@@ -1,9 +1,10 @@
 import { BordModel } from "../db/models/BordModel.js";
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
 
 export const allBords = (owner) => BordModel.find({ owner });
 
-export const addBord = async (owner, data) => {
+export const addBord = trycatchFunc(async (owner, data) => {
   const newBord = await BordModel.findOne({ name: data.name });
 
   if (newBord) {
@@ -14,9 +15,9 @@ export const addBord = async (owner, data) => {
 
   const board = await BordModel.create({ ...data, owner });
   return board;
-};
+});
 
-export const updateBord = async (boardId, owner, data) => {
+export const updateBord = trycatchFunc(async (boardId, owner, data) => {
   const updatedBord = await BordModel.findByIdAndUpdate(
     {
       _id: boardId,
@@ -27,9 +28,9 @@ export const updateBord = async (boardId, owner, data) => {
   );
 
   return updatedBord;
-};
+});
 
-export const deleteBord = async (owner, boardId) => {
+export const deleteBord = trycatchFunc(async (owner, boardId) => {
   const deletedBoard = await BordModel.findOneAndDelete({
     _id: boardId,
     owner,
@@ -38,4 +39,4 @@ export const deleteBord = async (owner, boardId) => {
   if (!deletedBoard) {
     throw HttpError(404);
   }
-};
+});

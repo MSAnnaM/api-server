@@ -17,6 +17,8 @@ import User from "../db/models/userModel.js";
 import fs from "fs/promises";
 import path from "path";
 import Jimp from "jimp";
+import { v2 as cloudinary } from "cloudinary";
+import { log } from "console";
 
 export const userSignup = async (req, res, next) => {
   try {
@@ -128,53 +130,36 @@ export const userUpdateSubscription = async (req, res) => {
 
 export const addAvatar = async (req, res, next) => {
   try {
-    const avatarsDir = path.resolve("public", "avatars");
-    const { id } = req.user;
-
-    if (!req.file) {
-      throw HttpError(400, "No image...Upload file");
-    }
-
-    const { path: tempUpload, originalname } = req.file;
-    const fileName = `${id}_${originalname}`;
-    const resultUpload = path.join(avatarsDir, fileName);
-    await fs.rename(tempUpload, resultUpload);
-    const avatarURL = path.join("avatars", fileName);
-
-    const image = await Jimp.read(resultUpload);
-    await image.resize(250, 250).writeAsync(resultUpload);
-
-    await User.findByIdAndUpdate(id, { avatarURL });
-
-    res.json({ avatarURL });
+    const file = req.file.path;
+    const avatarUrl = await usersServices.updateAvatar(file);
+    req.file = avatarUrl;
+    next();
   } catch (er) {
-    next(er);
+    console.log(er);;
   }
 };
 
-export const updateProfile = async (req, res) => {
-  const { _id } = req.user;
-
-  let avatarURL;
-
-  if (req.file) {
-    const { path: tmpUpload } = req.file;
-    avatarURL = await usersServices.updateAvatar(tmpUpload, _id);
-  }
-
-  if (req.body) {
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
     const { name, email, password } = req.body;
+    const avatarUrl = req.file;
+    
     const updatedUser = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
       password,
-      avatarURL,
+      avatarUrl,
     });
+    
+  
     res.json({
       updatedUser,
     });
+  } catch (er) {
+  console.log(er);
   }
-};
+}
 
 export const sendMails = trycatchFunc(async (req, res) => {
   const { email, comment } = req.body;

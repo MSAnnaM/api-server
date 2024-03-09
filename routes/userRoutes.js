@@ -13,6 +13,7 @@ import {
   userLogout,
   currentUser,
   updateProfile,
+  addAvatar,
 } from "../controllers/usersControllers.js";
 import { updateThemeSchema } from "../schemas/userSchemas.js";
 import { verifyToken } from "../midellwares/checkToken.js";
@@ -34,9 +35,10 @@ userRouter.patch(
 userRouter.patch(
   "/update",
   verifyToken,
-  upload.single("avatarURL"),
   validateBody(userUpdateSchema),
-  updateProfile,
+  upload.single('file'),
+  addAvatar,
+updateProfile
 );
 userRouter.post(
   "/help",
@@ -45,3 +47,4 @@ userRouter.post(
 );
 
 export default userRouter;
+
