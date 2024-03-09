@@ -20,7 +20,7 @@ columnRouter.get("/:boardId", verifyToken, checkIsValidId, getColumns);
 columnRouter.post(
   "/",
   verifyToken,
-  // validateBody(createColumnSchema),
+  validateBody(createColumnSchema),
   createColumn
 );
 
