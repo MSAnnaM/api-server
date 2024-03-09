@@ -13,7 +13,9 @@ import {
   userLogout,
   currentUser,
   updateProfile,
+  addAvatar,
 } from "../controllers/usersControllers.js";
+import { updateThemeSchema } from "../schemas/userSchemas.js";
 import { verifyToken } from "../midellwares/checkToken.js";
 import upload from "../midellwares/upload.js";
 
@@ -23,12 +25,19 @@ userRouter.post("/register", validateBody(userRegistrationSchema), userSignup);
 userRouter.post("/login", validateBody(loginUserSchema), userSignIn);
 userRouter.post("/logout", verifyToken, userLogout);
 userRouter.get("/current", verifyToken, currentUser);
+userRouter.patch(
+  "/current/theme",
+  verifyToken,
+  validateBody(updateThemeSchema),
+  usersControllers.updateTheme,
+);
 
 userRouter.patch(
   "/update",
   verifyToken,
-  upload.single("avatarURL"),
   validateBody(userUpdateSchema),
+  upload.single('file'),
+  addAvatar,
 updateProfile
 );
 userRouter.post(
@@ -38,3 +47,4 @@ userRouter.post(
 );
 
 export default userRouter;
+
