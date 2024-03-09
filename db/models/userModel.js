@@ -30,7 +30,7 @@ const userModel = Schema(
       default: null,
     },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
 

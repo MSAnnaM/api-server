@@ -76,3 +76,7 @@ export const updateProfileInDatabase = async (userId, updatedData) => {
     console.log(err);
   }
 };
+
+export const updateTheme = async (userId, theme) => {
+  return User.findByIdAndUpdate({ _id: userId }, { theme }, { new: true });
+};
