@@ -13,6 +13,7 @@ import {
   userLogout,
   currentUser,
   updateProfile,
+  addAvatar,
 } from "../controllers/usersControllers.js";
 import { verifyToken } from "../midellwares/checkToken.js";
 import upload from "../midellwares/upload.js";
@@ -27,8 +28,9 @@ userRouter.get("/current", verifyToken, currentUser);
 userRouter.patch(
   "/update",
   verifyToken,
-  upload.single("avatarURL"),
   validateBody(userUpdateSchema),
+  upload.single('file'),
+  addAvatar,
 updateProfile
 );
 userRouter.post(
@@ -38,3 +40,4 @@ userRouter.post(
 );
 
 export default userRouter;
+

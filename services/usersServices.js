@@ -70,7 +70,7 @@ export const updateProfileInDatabase = async (userId, updatedData) => {
     const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
       new: true,
     });
-
+    
     return updatedUser || null;
   } catch (err) {
     console.log(err);
