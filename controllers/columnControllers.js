@@ -13,6 +13,7 @@ export const getColumns = trycatchFunc(async (req, res) => {
 
 export const createColumn = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
+  const { boardId, title } = req.body;
 
   const newColumn = await colomnServices.createNewColumn(owner, req.body);
 
