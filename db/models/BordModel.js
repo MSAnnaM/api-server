@@ -26,9 +26,6 @@ const bordSchema = new Schema(
       type: String,
       default: "1",
     },
-    icon: {
-      type: String,
-    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
