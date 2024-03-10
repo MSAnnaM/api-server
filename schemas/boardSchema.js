@@ -9,9 +9,8 @@ export const createBoardSchema = Joi.object({
     "string.empty": '"Icon" field cannot be empty',
     "any.default": 'Failed to set a default value for "Icon"',
   }),
-  background: Joi.string().default("1").label("Background").messages({
+  background: Joi.object().messages({
     "string.empty": '"Background" field cannot be empty',
-    "any.default": 'Failed to set a default value for "Background"',
   }),
 });
 
@@ -22,7 +21,7 @@ export const updateBoardSchema = Joi.object({
   icon: Joi.string().label("Icon").messages({
     "string.empty": '"Icon" field cannot be empty',
   }),
-  background: Joi.string().label("Background").messages({
+  background: Joi.object().messages({
     "string.empty": '"Background" field cannot be empty',
   }),
 });
