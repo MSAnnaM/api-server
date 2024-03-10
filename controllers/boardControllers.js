@@ -25,8 +25,8 @@ export const createBord = trycatchFunc(async (req, res) => {
 
   const newBoard = await bordService.addBord(owner, req.body);
 
-  if (newBoard) {
-    throw HttpError(409, "This name is already in use");
+  if (newBoard && newBoard.error) {
+    throw HttpError(409, newBoard.error);
   }
   res.json("Succses!").json(newBoard);
 });
@@ -43,7 +43,7 @@ export const updateBordcontroller = trycatchFunc(async (req, res) => {
   const updatedBord = await bordService.updateBord(id, owner, body);
 
   if (!updatedBord) {
-    throw HttpError(404, `Board id${id} not found`);
+    throw HttpError(404, `Board with id ${id} changes accepted`);
   }
   res.json(updatedBord);
 });

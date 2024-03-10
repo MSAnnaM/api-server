@@ -29,6 +29,10 @@ export const cardSchema = Joi.object({
     "string.empty": '"Id" cannot be an empty field',
     "any.required": 'Missing required field "Id"',
   }),
+  index: Joi.number().required().label("Index").messages({
+    "string.empty": '"Index" cannot be an empty field',
+    "any.required": 'Missing required field "Index"',
+  }),
 });
 
 export const updateCardSchema = Joi.object({
@@ -58,5 +62,9 @@ export const updateColumnIdinCardSchema = Joi.object({
   columnId: Joi.string().required().label("Id").messages({
     "string.empty": '"Id" cannot be an empty field',
     "any.required": 'Missing required field "Id"',
+  }),
+  index: Joi.number().required().label("Index").messages({
+    "string.empty": '"Index" cannot be an empty field',
+    "any.required": 'Missing required field "Index"',
   }),
 });
