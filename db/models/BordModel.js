@@ -1,3 +1,4 @@
+import { object } from "joi";
 import { Schema, model } from "mongoose";
 
 const iconList = [
@@ -23,8 +24,8 @@ const bordSchema = new Schema(
       enum: iconList,
     },
     background: {
-      type: String,
-      default: "1",
+      type: Object,
+      default: {},
     },
     owner: {
       type: Schema.Types.ObjectId,
