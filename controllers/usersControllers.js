@@ -14,11 +14,6 @@ import HttpError from "../helpers/HttpError.js";
 import { trycatchFunc } from "../helpers/trycatchFunc.js";
 import { sendMail } from "../services/sendEmail.js";
 import User from "../db/models/userModel.js";
-import fs from "fs/promises";
-import path from "path";
-import Jimp from "jimp";
-import { v2 as cloudinary } from "cloudinary";
-import { log } from "console";
 
 export const userSignup = async (req, res, next) => {
   try {
@@ -62,7 +57,7 @@ export const userSignIn = async (req, res, next) => {
 
     const isPasswordValid = await bcrypt.compare(
       password,
-      existingUser.password,
+      existingUser.password
     );
 
     if (!isPasswordValid) {
@@ -119,7 +114,7 @@ export const userUpdateSubscription = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       id,
       { subscription },
-      { new: true },
+      { new: true }
     );
 
     res.json(updateUser);
@@ -135,7 +130,7 @@ export const addAvatar = async (req, res, next) => {
     req.file = avatarUrl;
     next();
   } catch (er) {
-    console.log(er);;
+    console.log(er);
   }
 };
 
@@ -144,22 +139,21 @@ export const updateProfile = async (req, res, next) => {
     const { _id } = req.user;
     const { name, email, password } = req.body;
     const avatarUrl = req.file;
-    
+
     const updatedUser = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
       password,
       avatarUrl,
     });
-    
-  
+
     res.json({
       updatedUser,
     });
   } catch (er) {
-  console.log(er);
+    console.log(er);
   }
-}
+};
 
 export const sendMails = trycatchFunc(async (req, res) => {
   const { email, comment } = req.body;
