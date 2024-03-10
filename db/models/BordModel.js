@@ -1,4 +1,5 @@
-import { object } from "joi";
+import pkg from 'joi';
+const { object } = pkg;
 import { Schema, model } from "mongoose";
 
 const iconList = [
