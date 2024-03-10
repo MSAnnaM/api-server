@@ -125,9 +125,12 @@ export const userUpdateSubscription = async (req, res) => {
 
 export const addAvatar = async (req, res, next) => {
   try {
-    const file = req.file.path;
+    if (req.file) {
+       const file = req.file.path;
     const avatarUrl = await usersServices.updateAvatar(file);
     req.file = avatarUrl;
+    }
+   
     next();
   } catch (er) {
     console.log(er);
@@ -137,16 +140,26 @@ export const addAvatar = async (req, res, next) => {
 export const updateProfile = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    const { name, email, password } = req.body;
-    const avatarUrl = req.file;
+    let updatedAvatar, updatedInfo, avatarUrl;
 
-    const updatedUser = await usersServices.updateProfileInDatabase(_id, {
+    if (req.file) {
+      avatarUrl = req.file;
+      updatedAvatar = await usersServices.updateProfileInDatabase(_id, {
+      avatarUrl,
+    });
+    }
+
+    if (req.body) {
+      const { name, email, password } = req.body;
+    updatedInfo = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
       password,
-      avatarUrl,
     });
 
+   
+    }
+    const updatedUser = { ...updatedAvatar, ...updatedInfo };
     res.json({
       updatedUser,
     });
