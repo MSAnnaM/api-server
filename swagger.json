@@ -232,6 +232,139 @@
           }
         }
       }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Boards"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Boards"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createBoard"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/newBoardResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/:boardId": {
+      "put": {
+        "tags": [
+          "Boards"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "boardId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createBoard"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createBoard"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -262,7 +395,10 @@
       "RegistrationResponse": {
         "type": "object",
         "properties": {
-          "type": "object",
+          "token": {
+            "type": "string",
+            "example": "eXcWmsiMJ79RCu3AQ6X3aIJrcUd6Uq0UdBAOMMQ6bBmFh7iiSCtIuIscLWKwFY17"
+          },
           "user": {
             "type": "object",
             "properties": {
@@ -307,7 +443,8 @@
         "type": "object",
         "properties": {
           "token": {
-            "type": "string"
+            "type": "string",
+            "example": "eXcWmsiMJ79RCu3AQ6X3aIJrcUd6Uq0UdBAOMMQ6bBmFh7iiSCtIuIscLWKwFY17"
           },
           "user": {
             "type": "object",
@@ -381,6 +518,34 @@
       "MessageError": {
         "type": "string",
         "example": "Failed to send message"
+      },
+      "GetResponse": {
+        "type": "string",
+        "example": "[{}]"
+      },
+      "Unauthorized": {
+        "type": "string",
+        "example": "Not authorized"
+      },
+      "createBoard": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "icon": {
+            "type": "string",
+            "default": "four-circles"
+          },
+          "background": {
+            "type": "string",
+            "default": "1"
+          }
+        }
+      },
+      "newBoardResponse": {
+        "type": "object"
       }
     }
   }
