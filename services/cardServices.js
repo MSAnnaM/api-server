@@ -1,16 +1,14 @@
 import { CardModel } from "../db/models/cardModel.js";
 import HttpError from "../helpers/HttpError.js";
-import { trycatchFunc } from "../helpers/trycatchFunc.js";
 
-export const allCards = trycatchFunc(async (boardId, owner) => {
-  const cards = await CardModel.find({ boardId, owner });
+export const allCards = async (boardId, owner) => {
+  const allCardsforUser = await CardModel.find({ boardId, owner });
 
-  if (!cards) {
+  if (!allCardsforUser) {
     throw HttpError(404, `No card found for the given parameters`);
   }
-
-  return cards;
-});
+  return allCardsforUser;
+};
 
 export const newCards = async (owner, data) => {
   const addCard = await CardModel.create({ ...data, owner });

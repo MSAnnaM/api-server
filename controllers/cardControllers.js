@@ -6,9 +6,9 @@ export const getters = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
   const id = req.params.boardId;
 
-  const cards = await cardServices.allCards(id, owner);
+  const gettersCards = await cardServices.allCards(id, owner);
 
-  res.json(cards);
+  res.json(gettersCards);
 });
 
 export const createCard = trycatchFunc(async (req, res) => {
