@@ -25,8 +25,8 @@ const bordSchema = new Schema(
       enum: iconList,
     },
     background: {
-      type: Object,
-      default: {},
+      type: String,
+      default: "1",
     },
     owner: {
       type: Schema.Types.ObjectId,
