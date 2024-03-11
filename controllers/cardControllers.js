@@ -8,9 +8,9 @@ export const getters = trycatchFunc(async (req, res) => {
   console.log(id);
   console.log("params", req.params);
 
-  const cards = await cardServices.allCards(owner, id);
+  const gettersCards = await cardServices.allCards(id, owner);
 
-  res.json(cards);
+  res.json(gettersCards);
 });
 
 export const createCard = trycatchFunc(async (req, res) => {

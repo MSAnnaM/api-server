@@ -13,6 +13,7 @@ export const getColumns = trycatchFunc(async (req, res) => {
 
 export const createColumn = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
+  const { boardId, title } = req.body;
 
   const newColumn = await colomnServices.createNewColumn(owner, req.body);
 
@@ -31,7 +32,7 @@ export const removeColumn = trycatchFunc(async (req, res) => {
   if (!removedColumn) {
     throw HttpError(404, `Column with id${id} not found`);
   }
-  res.json({ message: "Deleted successfully" });
+  res.json({ id, message: "Deleted successfully" });
 });
 
 export const updateColumn = trycatchFunc(async (req, res) => {

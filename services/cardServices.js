@@ -1,42 +1,43 @@
 import { CardModel } from "../db/models/cardModel.js";
 import HttpError from "../helpers/HttpError.js";
 
+export const allCards = async (boardId, owner) => {
+  const allCardsforUser = await CardModel.find({ boardId, owner });
 
-export const allCards = async (owner, id) => {
-  console.log("service id", id);
-  console.log("owner", owner);
-  const cards = await CardModel.find({ owner }).where("columnId")
-      .equals(id);
-
-  if (!cards) {
-    throw HttpError(404, "No Cards Found");
+  if (!allCardsforUser) {
+    throw HttpError(404, `No card found for the given parameters`);
   }
-  return cards;
+  return allCardsforUser;
 };
 
-export const newCards = async (columnId, owner, data) => {
-  const addCard = await CardModel.create({ ...data, owner, columnId });
+export const newCards = async (owner, data) => {
+  const addCard = await CardModel.create({ ...data, owner });
+
   return addCard;
 };
 
-export const updateCard = async (id, owner, data) => {
+export const updateCard = async (_id, owner, data) => {
   const updatedCard = await CardModel.findOneAndUpdate(
-    { _id: id, owner },
+    { _id, owner },
     data,
     { new: true }
   );
+
   return updatedCard;
 };
 
 export const deleteCard = async (id, owner) => {
   const deletedCard = await CardModel.findOneAndDelete({ _id: id, owner });
+
   return deletedCard;
 };
 
-export const columnUpdateInCard = async (id, owner, { columnId }) => {
+export const columnUpdateInCard = async (id, owner, { columnId, index }) => {
   const updatedCard = await CardModel.findOneAndUpdate(
     { _id: id, owner },
-    { $set: { columnId } },
+    { $set: { columnId, index } },
     { new: true }
   );
+
+  return updatedCard;
 };

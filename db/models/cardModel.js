@@ -17,6 +17,10 @@ const cardModel = Schema(
       enum: priorityList,
       default: "Low",
     },
+    deadline: {
+      type: Date,
+      required: true,
+    },
     columnId: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -31,6 +35,10 @@ const cardModel = Schema(
       type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
+    },
+    index: {
+      type: Number,
+      required: true,
     },
   },
   { versionKey: false }
