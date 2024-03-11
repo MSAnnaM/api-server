@@ -1,15 +1,18 @@
 import { CardModel } from "../db/models/cardModel.js";
 import HttpError from "../helpers/HttpError.js";
-import { trycatchFunc } from "../helpers/trycatchFunc.js";
 
-export const allCards = trycatchFunc(async (owner) => {
-  const cards = await CardModel.find({ owner });
+
+export const allCards = async (owner, id) => {
+  console.log("service id", id);
+  console.log("owner", owner);
+  const cards = await CardModel.find({ owner }).where("columnId")
+      .equals(id);
 
   if (!cards) {
     throw HttpError(404, "No Cards Found");
   }
   return cards;
-});
+};
 
 export const newCards = async (columnId, owner, data) => {
   const addCard = await CardModel.create({ ...data, owner, columnId });

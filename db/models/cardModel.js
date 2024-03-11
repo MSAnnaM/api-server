@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const priorityList = ["Without priority", "Low", "Medium", "High"];
+const priorityList = ["Without", "Low", "Medium", "High"];
 
 const cardModel = Schema(
   {
