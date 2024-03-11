@@ -35,8 +35,10 @@ export const deleteBord = async (owner, boardId) => {
     _id: boardId,
     owner,
   });
+  console.log(deletedBoard);
 
   if (!deletedBoard) {
-    throw HttpError(404);
+    throw HttpError(404, "Board not found");
   }
+  return deletedBoard;
 };
