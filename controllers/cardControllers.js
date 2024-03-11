@@ -4,7 +4,9 @@ import * as cardServices from "../services/cardServices.js";
 
 export const getters = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
-  const id = req.params.boardId;
+  const id = req.params.columnId;
+  console.log(id);
+  console.log("params", req.params);
 
   const gettersCards = await cardServices.allCards(id, owner);
 
@@ -13,7 +15,9 @@ export const getters = trycatchFunc(async (req, res) => {
 
 export const createCard = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
+  console.log("owner create", owner);
   const { body } = req;
+  console.log("create", body);
 
   const newCard = await cardServices.newCards(owner, body);
 

@@ -22,7 +22,7 @@ const userModel = Schema(
     },
     theme: {
       type: String,
-      enum: ["light", "dark", "blue"],
+      enum: ["light", "dark", "violet"],
       default: "dark",
     },
     token: {
