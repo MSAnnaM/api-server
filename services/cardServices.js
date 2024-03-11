@@ -1,8 +1,9 @@
 import { CardModel } from "../db/models/cardModel.js";
 import HttpError from "../helpers/HttpError.js";
 
-export const allCards = async (boardId, owner) => {
-  const allCardsforUser = await CardModel.find({ boardId, owner });
+export const allCards = async (columnId, owner) => {
+  const allCardsforUser = await CardModel.find({ owner }).where("columnId")
+      .equals(columnId);
 
   if (!allCardsforUser) {
     throw HttpError(404, `No card found for the given parameters`);
