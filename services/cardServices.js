@@ -16,9 +16,9 @@ export const newCards = async (owner, data) => {
   return addCard;
 };
 
-export const updateCard = async (id, owner, data) => {
+export const updateCard = async (_id, owner, data) => {
   const updatedCard = await CardModel.findOneAndUpdate(
-    { _id: id, owner },
+    { _id, owner },
     data,
     { new: true }
   );
