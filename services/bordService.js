@@ -1,6 +1,6 @@
 import { BordModel } from "../db/models/BordModel.js";
-import HttpError from "../helpers/HttpError.js";
-
+import { ColomnModel } from "../db/models/columnModel.js";
+import { CardModel } from "../db/models/cardModel.js";
 
 export const allBords = (owner) => BordModel.find({ owner });
 
@@ -29,15 +29,14 @@ export const updateBord = async (boardId, owner, data) => {
   return updatedBord;
 };
 
-export const deleteBord = async (owner, boardId) => {
-  const deletedBoard = await BordModel.findOneAndDelete({
-    _id: boardId,
-    owner,
-  });
-  console.log(deletedBoard);
+export const deleteBoardColumns = async (boardId) => {
+  return await ColomnModel.deleteMany({ boardId: boardId });
+};
 
-  if (!deletedBoard) {
-    throw HttpError(404, "Board not found");
-  }
-  return deletedBoard;
+export const deleteBoardCards = async (boardId) => {
+  return await CardModel.deleteMany({ boardId: boardId });
+};
+
+export const deletesBoard = async (id, owner) => {
+  return await BordModel.findOneAndDelete({ _id: id, owner });
 };

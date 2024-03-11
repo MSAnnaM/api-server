@@ -24,15 +24,22 @@ export const createColumn = trycatchFunc(async (req, res) => {
 });
 
 export const removeColumn = trycatchFunc(async (req, res) => {
-  const id = req.params.columnId;
-  const { _id: owner } = req.user;
+  const { id, owner } = req.params;
+
+  const column = await colomnServices.findColumn(id, owner);
+  if (!column) {
+    throw HttpError(404, `Column with id ${id} not found`);
+  }
+
+  const deleteCardsResult = await colomnServices.deleteCards(id);
+
+  if (deleteCardsResult.deletedCount === 0) {
+    throw new Error(`No cards were deleted for column with id ${id}`);
+  }
 
   const removedColumn = await colomnServices.deleteColumn(id, owner);
 
-  if (!removedColumn) {
-    throw HttpError(404, `Column with id${id} not found`);
-  }
-  res.json({ id, message: "Deleted successfully" });
+  res.json(removedColumn);
 });
 
 export const updateColumn = trycatchFunc(async (req, res) => {
