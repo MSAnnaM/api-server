@@ -15,6 +15,7 @@ export const createBoardSchema = Joi.object({
 });
 
 export const updateBoardSchema = Joi.object({
+  _id: Joi.string(),
   name: Joi.string().required().label("Name").messages({
     "string.empty": '"Name" cannot be an empty field',
   }),

@@ -26,7 +26,9 @@ export const createBord = trycatchFunc(async (req, res) => {
 });
 
 export const updateBordcontroller = trycatchFunc(async (req, res) => {
-  const id = req.params.boardId;
+  
+  const _id = req.params.boardId;
+  console.log(_id);
   const { body } = req;
   const { _id: owner } = req.user;
 
@@ -34,10 +36,10 @@ export const updateBordcontroller = trycatchFunc(async (req, res) => {
     throw HttpError(400, "missing field");
   }
 
-  const updatedBord = await bordService.updateBord(id, owner, body);
+  const updatedBord = await bordService.updateBord(_id, owner, body);
 
   if (!updatedBord) {
-    throw HttpError(404, `Board with id ${id} changes accepted`);
+    throw HttpError(404, `Board with id ${_id} changes accepted`);
   }
   res.json(updatedBord);
 });
