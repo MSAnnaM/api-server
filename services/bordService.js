@@ -1,8 +1,15 @@
 import { BordModel } from "../db/models/BordModel.js";
-import { ColomnModel } from "../db/models/columnModel.js";
+import { ColumnModel } from "../db/models/columnModel.js";
 import { CardModel } from "../db/models/cardModel.js";
 
-export const allBords = (owner) => BordModel.find({ owner });
+export const allBords = (owner) =>
+  BordModel.find({ owner }).populate({
+    path: "columns",
+    populate: {
+      path: "cards",
+      model: "Card",
+    },
+  });
 
 export const addBord = async (owner, data) => {
   const newBord = await BordModel.findOne({ name: data.name });
@@ -30,7 +37,7 @@ export const updateBord = async (boardId, owner, data) => {
 };
 
 export const deleteBoardColumns = async (boardId) => {
-  return await ColomnModel.deleteMany({ boardId: boardId });
+  return await ColumnModel.deleteMany({ boardId: boardId });
 };
 
 export const deleteBoardCards = async (boardId) => {

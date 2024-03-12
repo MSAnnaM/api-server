@@ -1,16 +1,15 @@
-import pkg from 'joi';
-const { object } = pkg;
 import { Schema, model } from "mongoose";
+import mongooseAutopopulate from "mongoose-autopopulate";
 
 const iconList = [
-  'icon-project',
-  'icon-star',
-  'icon-loading',
-  'icon-puzzle',
-  'icon-container',
-  'icon-lightning',
-  'icon-colors',
-  'icon-hexagon',
+  "icon-project",
+  "icon-star",
+  "icon-loading",
+  "icon-puzzle",
+  "icon-container",
+  "icon-lightning",
+  "icon-colors",
+  "icon-hexagon",
 ];
 
 const bordSchema = new Schema(
@@ -21,7 +20,7 @@ const bordSchema = new Schema(
     },
     icon: {
       type: String,
-      default: 'icon-hexagon',
+      default: "icon-hexagon",
       enum: iconList,
     },
     background: {
@@ -33,8 +32,17 @@ const bordSchema = new Schema(
       ref: "User",
       required: true,
     },
+    columns: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Colomn",
+        autopopulate: true,
+      },
+    ],
   },
   { versionKey: false }
 );
+
+bordSchema.plugin(mongooseAutopopulate);
 
 export const BordModel = model("Bord", bordSchema);
