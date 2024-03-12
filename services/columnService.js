@@ -1,5 +1,6 @@
 import { ColumnModel } from "../db/models/columnModel.js";
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
 
 export const getAllColumnByBoard = async (id, owner) => {
   const columns = await ColumnModel.find({ boardId: id, owner });
@@ -10,13 +11,14 @@ export const getAllColumnByBoard = async (id, owner) => {
   return columns;
 };
 
-export const createNewColumn = async (boardId, owner, data) => {
-  const column = await ColumnModel.findOne({ boardId, title: data.title });
+export const createNewColumn = async (owner, data) => {
+  const { boardId, title } = data;
+  const column = await ColumnModel.findOne({ boardId, title });
 
   if (column) {
     throw HttpError(409, "This column already exists in this board.");
   }
-  const newColumn = await columnModel.create({ ...data, owner, boardId });
+  const newColumn = await ColumnModel.create({ ...data, owner });
 
   return newColumn;
 };

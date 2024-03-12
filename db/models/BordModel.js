@@ -1,4 +1,17 @@
+import pkg from 'joi';
+const { object } = pkg;
 import { Schema, model } from "mongoose";
+
+const iconList = [
+  'icon-project',
+  'icon-star',
+  'icon-loading',
+  'icon-puzzle',
+  'icon-container',
+  'icon-lightning',
+  'icon-colors',
+  'icon-hexagon',
+];
 
 const bordSchema = new Schema(
   {
@@ -6,9 +19,14 @@ const bordSchema = new Schema(
       type: String,
       required: true,
     },
+    icon: {
+      type: String,
+      default: 'icon-hexagon',
+      enum: iconList,
+    },
     background: {
       type: String,
-      default: "default.jpg",
+      default: null,
     },
     owner: {
       type: Schema.Types.ObjectId,

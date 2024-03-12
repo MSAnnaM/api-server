@@ -1,5 +1,6 @@
 import { BordModel } from "../db/models/BordModel.js";
 import HttpError from "../helpers/HttpError.js";
+import { trycatchFunc } from "../helpers/trycatchFunc.js";
 
 export const allBords = (owner) => BordModel.find({ owner });
 

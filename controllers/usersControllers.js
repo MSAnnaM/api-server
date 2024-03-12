@@ -14,15 +14,11 @@ import HttpError from "../helpers/HttpError.js";
 import { trycatchFunc } from "../helpers/trycatchFunc.js";
 import { sendMail } from "../services/sendEmail.js";
 import User from "../db/models/userModel.js";
-import fs from "fs/promises";
-import path from "path";
-import Jimp from "jimp";
 
 export const userSignup = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const existingUser = await getUserByEmail(email);
-    
 
     if (existingUser) {
       throw HttpError(409, "Email in use");
@@ -61,7 +57,7 @@ export const userSignIn = async (req, res, next) => {
 
     const isPasswordValid = await bcrypt.compare(
       password,
-      existingUser.password,
+      existingUser.password
     );
 
     if (!isPasswordValid) {
@@ -118,7 +114,7 @@ export const userUpdateSubscription = async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(
       id,
       { subscription },
-      { new: true },
+      { new: true }
     );
 
     res.json(updateUser);
@@ -129,51 +125,46 @@ export const userUpdateSubscription = async (req, res) => {
 
 export const addAvatar = async (req, res, next) => {
   try {
-    const avatarsDir = path.resolve("public", "avatars");
-    const { id } = req.user;
-
-    if (!req.file) {
-      throw HttpError(400, "No image...Upload file");
+    if (req.file) {
+       const file = req.file.path;
+    const avatarUrl = await usersServices.updateAvatar(file);
+    req.file = avatarUrl;
     }
-
-    const { path: tempUpload, originalname } = req.file;
-    const fileName = `${id}_${originalname}`;
-    const resultUpload = path.join(avatarsDir, fileName);
-    await fs.rename(tempUpload, resultUpload);
-    const avatarURL = path.join("avatars", fileName);
-
-    const image = await Jimp.read(resultUpload);
-    await image.resize(250, 250).writeAsync(resultUpload);
-
-    await User.findByIdAndUpdate(id, { avatarURL });
-
-    res.json({ avatarURL });
+   
+    next();
   } catch (er) {
-    next(er);
+    console.log(er);
   }
 };
 
-export const updateProfile = async (req, res) => {
-  const { _id } = req.user;
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    let updatedAvatar, updatedInfo, avatarUrl;
 
-  let avatarURL;
+    if (req.file) {
+      avatarUrl = req.file;
+      updatedAvatar = await usersServices.updateProfileInDatabase(_id, {
+      avatarUrl,
+    });
+    }
 
-  if (req.file) {
-    const { path: tmpUpload } = req.file;
-    avatarURL = await usersServices.updateAvatar(tmpUpload, _id);
-  }
-
-  if (req.body) {
-    const { name, email, password } = req.body;
-    const updatedUser = await usersServices.updateProfileInDatabase(_id, {
+    if (req.body) {
+      const { name, email, password } = req.body;
+    updatedInfo = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
       password,
-      avatarURL,
     });
+
+   
+    }
+    const updatedUser = { ...updatedAvatar, ...updatedInfo };
     res.json({
       updatedUser,
     });
+  } catch (er) {
+    console.log(er);
   }
 };
 
@@ -188,3 +179,11 @@ export const sendMails = trycatchFunc(async (req, res) => {
     res.status(500).json({ error: "Failed to send message" });
   }
 });
+
+export const updateTheme = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { theme } = req.body;
+
+  const user = await usersServices.updateTheme(userId, theme);
+  res.json({ theme: user.theme });
+};
