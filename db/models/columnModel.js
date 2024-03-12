@@ -15,6 +15,9 @@ const columnSchema = Schema(
       ref: "User",
       required: true,
     },
+    cards: {
+      type: Array,
+    },
   },
   { versionKey: false }
 );
