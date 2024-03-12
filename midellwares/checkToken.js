@@ -4,11 +4,10 @@ import { checkAuthToken } from "../helpers/token.js";
 
 export const verifyToken = async (req, res, next) => {
   try {
-    const token =
-      req.headers.authorization?.startsWith("Bearer") &&
-      req.headers.authorization?.split(" ")[1];
+    const { authorization = "" } = req.headers;
+    const [bearer, token] = authorization.split(" ");
 
-    if (!token) {
+    if (bearer !== "Bearer") {
       throw HttpError(401, "Not authorized");
     }
 
