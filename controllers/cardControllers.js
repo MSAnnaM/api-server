@@ -29,7 +29,7 @@ export const removeCard = trycatchFunc(async (req, res) => {
   if (!card) {
     throw HttpError(404, `Card  with the ID ${id} not found.`);
   }
-  res.json({ message: "The card has been deleted." });
+  res.json(card);
 });
 
 export const updateCardController = trycatchFunc(async (req, res) => {
