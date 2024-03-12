@@ -1,6 +1,6 @@
 import { BordModel } from "../db/models/BordModel.js";
 import HttpError from "../helpers/HttpError.js";
-import { trycatchFunc } from "../helpers/trycatchFunc.js";
+
 
 export const allBords = (owner) => BordModel.find({ owner });
 
@@ -26,7 +26,6 @@ export const updateBord = async (boardId, owner, data) => {
     data,
     { new: true }
   );
-
   return updatedBord;
 };
 
@@ -35,8 +34,10 @@ export const deleteBord = async (owner, boardId) => {
     _id: boardId,
     owner,
   });
+  console.log(deletedBoard);
 
   if (!deletedBoard) {
-    throw HttpError(404);
+    throw HttpError(404, "Board not found");
   }
+  return deletedBoard;
 };

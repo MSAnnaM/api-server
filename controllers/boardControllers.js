@@ -13,11 +13,8 @@ export const deleteBord = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
 
   const board = await bordService.deleteBord(owner, id);
-
-  if (!board) {
-    throw HttpError(404, `Bord id ${id} deleted! `);
-  }
-  res.json({ message: "Bord  deleted!" });
+  
+  res.json({_id: board.id});
 });
 
 export const createBord = trycatchFunc(async (req, res) => {
@@ -25,14 +22,13 @@ export const createBord = trycatchFunc(async (req, res) => {
 
   const newBoard = await bordService.addBord(owner, req.body);
 
-  if (newBoard && newBoard.error) {
-    throw HttpError(409, newBoard.error);
-  }
-  res.json("Succses!").json(newBoard);
+  res.json(newBoard);
 });
 
 export const updateBordcontroller = trycatchFunc(async (req, res) => {
-  const id = req.params.boardId;
+  
+  const _id = req.params.boardId;
+  console.log(_id);
   const { body } = req;
   const { _id: owner } = req.user;
 
@@ -40,10 +36,10 @@ export const updateBordcontroller = trycatchFunc(async (req, res) => {
     throw HttpError(400, "missing field");
   }
 
-  const updatedBord = await bordService.updateBord(id, owner, body);
+  const updatedBord = await bordService.updateBord(_id, owner, body);
 
   if (!updatedBord) {
-    throw HttpError(404, `Board with id ${id} changes accepted`);
+    throw HttpError(404, `Board with id ${_id} changes accepted`);
   }
   res.json(updatedBord);
 });

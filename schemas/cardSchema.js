@@ -10,7 +10,7 @@ export const cardSchema = Joi.object({
     "any.required": '"Description" is a required field',
   }),
   priority: Joi.string()
-    .valid("Without priority", "Low", "Medium", "High")
+    .valid("Without", "Low", "Medium", "High")
     .default("Low")
     .label("Priority")
     .messages({

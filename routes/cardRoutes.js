@@ -17,7 +17,7 @@ import {
 
 const cardRouter = express.Router();
 
-cardRouter.get("/:boardId", verifyToken, checkIsValidId, getters);
+cardRouter.get("/:columnId", verifyToken, checkIsValidId, getters);
 
 cardRouter.post(
   "/:columnId",
