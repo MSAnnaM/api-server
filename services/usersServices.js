@@ -27,7 +27,7 @@ export async function userLogin(data) {
     const token = signupToken(_id);
     const result = await User.findByIdAndUpdate(
       _id,
-      { $set: { token } },
+      { token },
       { new: true }
     );
 
