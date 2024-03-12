@@ -372,8 +372,10 @@
       "RegistrationRequest": {
         "type": "object",
         "required": [
-          "email,password, name"
-        ],
+  "email",
+  "password",
+  "name"
+],
         "properties": {
           "name": {
             "type": "string",
@@ -424,8 +426,9 @@
       "LoginRequest": {
         "type": "object",
         "required": [
-          "email,password"
-        ],
+  "email",
+  "password"
+],
         "properties": {
           "email": {
             "type": "string",
