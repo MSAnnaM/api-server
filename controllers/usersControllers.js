@@ -159,9 +159,13 @@ export const updateProfile = async (req, res, next) => {
 
    
     }
-    const updatedUser = { ...updatedAvatar, ...updatedInfo };
+    const user = {
+      ...(updatedAvatar || {}),
+      ...(updatedInfo || {}),
+    };
+    console.log(user._doc);
     res.json({
-      updatedUser,
+      user: user._doc,
     });
   } catch (er) {
     console.log(er);
