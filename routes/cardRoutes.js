@@ -4,7 +4,7 @@ import { checkIsValidId } from "../midellwares/isValidId.js";
 import validateBody from "../helpers/validateBody.js";
 import {
   cardSchema,
-  updateCardSchema,
+  // updateCardSchema,
   updateColumnIdinCardSchema,
 } from "../schemas/cardSchema.js";
 import {
@@ -31,7 +31,7 @@ cardRouter.put(
   "/:cardId",
   verifyToken,
   checkIsValidId,
-  validateBody(updateCardSchema),
+  // validateBody(updateCardSchema),
   updateCardController
 );
 cardRouter.patch(
