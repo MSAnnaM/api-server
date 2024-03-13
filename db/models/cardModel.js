@@ -41,7 +41,7 @@ const cardModel = Schema(
       type: Number,
       required: true,
     },
-    allColumnId: {
+    oldColumnId: {
       type: String,
       default: "1",
       immutable: false,
