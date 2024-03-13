@@ -56,7 +56,10 @@ export const updateCardSchema = Joi.object({
   columnId: Joi.string().label("Id").messages({
     "string.empty": '"Id" cannot be empty',
   }),
-});
+  allColumnId: Joi.string().label("Id").messages({
+    "string.empty": '"Id" cannot be empty',
+  }),
+})
 
 export const updateColumnIdinCardSchema = Joi.object({
   columnId: Joi.string().required().label("Id").messages({

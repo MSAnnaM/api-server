@@ -44,6 +44,7 @@ const cardModel = Schema(
     allColumnId: {
       type: String,
       default: "1",
+      immutable: false,
     },
   },
   { versionKey: false }
