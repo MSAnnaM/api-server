@@ -1,3 +1,4 @@
+import { BordModel } from "../db/models/BordModel.js";
 import HttpError from "../helpers/HttpError.js";
 import { trycatchFunc } from "../helpers/trycatchFunc.js";
 import * as bordService from "../services/bordService.js";
@@ -19,6 +20,12 @@ export const deleteBord = trycatchFunc(async (req, res) => {
 
 export const createBord = trycatchFunc(async (req, res) => {
   const { _id: owner } = req.user;
+  const { name } = req.body;
+  const existingBoard = await BordModel.findOne({ name }).where("owner").equals(owner);
+  
+  if (existingBoard) {
+    throw HttpError(409, "Board has alredy created");
+  }
 
   const newBoard = await bordService.addBord(owner, req.body);
 
