@@ -42,7 +42,7 @@ const cardModel = Schema(
       required: true,
     },
     allBoardId: {
-      type: Number,
+      type: String,
     }
   },
   { versionKey: false }
