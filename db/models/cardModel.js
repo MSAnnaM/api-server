@@ -25,6 +25,7 @@ const cardModel = Schema(
       type: Schema.Types.ObjectId,
       required: true,
       ref: "Column",
+      immutable: false,
     },
     boardId: {
       type: Schema.Types.ObjectId,
