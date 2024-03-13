@@ -41,9 +41,10 @@ const cardModel = Schema(
       type: Number,
       required: true,
     },
-    allBoardId: {
+    allColumnId: {
       type: String,
-    }
+      default: "1",
+    },
   },
   { versionKey: false }
 );
