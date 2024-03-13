@@ -1,6 +1,6 @@
+import { CardModel } from "../db/models/cardModel.js";
 import { ColumnModel } from "../db/models/columnModel.js";
 import HttpError from "../helpers/HttpError.js";
-import { trycatchFunc } from "../helpers/trycatchFunc.js";
 
 export const getAllColumnByBoard = async (id, owner) => {
   const columns = await ColumnModel.find({ boardId: id, owner });
@@ -23,14 +23,6 @@ export const createNewColumn = async (owner, data) => {
   return newColumn;
 };
 
-export const deleteColumn = async (id, owner) => {
-  const removeColumn = await ColumnModel.findOneAndDelete({
-    _id: id,
-    owner,
-  });
-  return removeColumn;
-};
-
 export const updateColumn = async (id, owner, data) => {
   const updatedColumn = await ColumnModel.findOneAndUpdate(
     { _id: id, owner },
@@ -38,4 +30,19 @@ export const updateColumn = async (id, owner, data) => {
     { new: true }
   );
   return updatedColumn;
+};
+
+export const findColumn = async (id, owner) => {
+  const column = await ColumnModel.findOne({ _id: id, owner });
+  return column;
+};
+
+export const deleteCards = async (id) => {
+  const deleteCardsResult = await CardModel.deleteMany({ columnId: id });
+  return deleteCardsResult;
+};
+
+export const deleteColumn = async (id, owner) => {
+  const removedColumn = await ColumnModel.findOneAndDelete({ _id: id, owner });
+  return removedColumn;
 };

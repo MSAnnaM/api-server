@@ -12,9 +12,21 @@ export const deleteBord = trycatchFunc(async (req, res) => {
   const id = req.params.boardId;
   const { _id: owner } = req.user;
 
-  const board = await bordService.deleteBord(owner, id);
-  
-  res.json({_id: board.id});
+  await bordService.deleteBoardColumns(id);
+
+  await bordService.deleteBoardCards(id);
+
+  const deletedBoard = await bordService.deletesBoard(id, owner);
+
+  if (!deletedBoard) {
+    throw HttpError(404, "Board not found");
+  }
+
+  res.json({
+    _id: deletedBoard.id,
+    message:
+      "The board and all its associated columns and cards have been deleted.",
+  });
 });
 
 export const createBord = trycatchFunc(async (req, res) => {
@@ -26,7 +38,6 @@ export const createBord = trycatchFunc(async (req, res) => {
 });
 
 export const updateBordcontroller = trycatchFunc(async (req, res) => {
-  
   const _id = req.params.boardId;
   console.log(_id);
   const { body } = req;
