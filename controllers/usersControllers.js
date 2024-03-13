@@ -163,7 +163,7 @@ export const updateProfile = async (req, res, next) => {
       ...(updatedAvatar || {}),
       ...(updatedInfo || {}),
     };
-    console.log(user._doc);
+
     res.json({
       user: user._doc,
     });
