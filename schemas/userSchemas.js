@@ -42,10 +42,9 @@ export const userUpdateSchema = Joi.object({
 });
 
 export const sendMailSchema = Joi.object({
-  email: Joi.string().required().pattern(emailRegex).messages({
+  email: Joi.string().pattern(emailRegex).messages({
     "string.pattern.base": "Incorrect email format",
     "string.empty": '"email" cannot be an empty field',
-    "any.required": 'missing required field "email"',
   }),
   comment: Joi.string().messages({
     "string.empty": '"comment" cannot be an empty field',
