@@ -151,10 +151,11 @@ export const updateProfile = async (req, res, next) => {
 
     if (req.body) {
       const { name, email, password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
     updatedInfo = await usersServices.updateProfileInDatabase(_id, {
       name,
       email,
-      password,
+      password: hashedPassword,
     });
 
    
