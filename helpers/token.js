@@ -5,7 +5,7 @@ dotenv.config();
 const { TOKEN_SECRET} = process.env;
 
 export const signupToken = (id) => {
-  return jwt.sign({ id }, TOKEN_SECRET, { expiresIn: "23h" });
+  return jwt.sign({ id }, TOKEN_SECRET, { expiresIn: "1y" });
 };
 
 export const checkAuthToken = (token) => {
