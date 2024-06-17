@@ -1,20 +1,20 @@
 import nodemailer from "nodemailer";
 import "dotenv/config";
 
-const { UKR_PASSWORD, UKR_NET_FROM } = process.env;
+const { EMAIL_PASS, EMAIL_META } = process.env;
 
 export const sendMail = async (email, comment) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.ukr.net",
-    port: 465, // 25, 465, 2525
+    host: "smtp.meta.ua",
+    port: 465,
     auth: {
-      user: UKR_NET_FROM,
-      pass: UKR_PASSWORD,
+      user: EMAIL_META,
+      pass: EMAIL_PASS,
     },
   });
 
   const mailOptions = {
-    from: UKR_NET_FROM,
+    from: EMAIL_META,
     to: "momotanna.m@gmail.com",
     subject: "Need Help",
     html: `<h1>Email to answer: ${email}<br>Comment: ${comment}</h1>`,
